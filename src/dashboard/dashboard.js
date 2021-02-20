@@ -11,47 +11,49 @@ const longText =
 export default function Dashboard() {
     return (
         <div className='flex flex-col bg-img1 h-screen bg-cover bg-center'>
-            <div className='grid grid-cols-2  mr-4 ml-4 '>
-                <div className='col-start-1  mt-4 '>
-                    <h2>YourLogo</h2>
+            <div className='h-full bg-blue-900 bg-opacity-80'>
+                <div className='grid grid-cols-2  mr-4 ml-4 '>
+                    <div className='col-start-1  mt-4 text-gray-100 '>
+                        <h2>YourLogo</h2>
+                    </div>
+                    <div className='col-end-7  mt-4'>
+                        <button className='bg-transparent hover:bg-gray-600 text-gray-100 font-semibold hover:text-gray-50 py-2 px-4 border border-gray hover:border-transparent rounded-full mr-2'>
+                            Sign In
+                        </button>
+                    </div>
                 </div>
-                <div className='col-end-7  mt-4'>
-                    <button className='bg-transparent hover:bg-gray-600 text-gray-dark font-semibold hover:text-gray-50 py-2 px-4 border border-gray hover:border-transparent rounded-full mr-2'>
-                        Sign In
-                    </button>
-                </div>
-            </div>
-            <div className='grid grid-cols-2  ml-14 mt-40'>
-                <div className='grid grid-rows-3 '>
-                    <h1 className='mb-8 font-mono text-7xl'>StudApp</h1>
+
+                <div className='flex flex-col mx-auto ml-72 mr-72 text-gray-100 '>
+                    <h1 className='mb-8 font-mono text-7xl mx-auto mt-32 text-gray-100'>StudApp</h1>
                     <ReactReadMoreReadLess
                         charLimit={200}
                         readMoreText={'Read more ▼'}
                         readLessText={'Read less ▲'}
-                        readMoreClassName='text-green-700'
-                        readLessClassName='text-green-700'>
+                        readMoreClassName='text-gray-300 mx-auto'
+                        readLessClassName='text-gray-300 mx-auto'>
                         {longText}
                     </ReactReadMoreReadLess>
-                    <button className=' w-52 bg-transparent hover:bg-gray-600 text-gray-dark font-semibold hover:text-gray-50 py-2 px-4 border border-gray hover:border-transparent rounded-full'>
+                    <button className='mx-auto mt-12 w-52 bg-red-900 hover:bg-gray-600 text-gray-100 font-semibold hover:text-gray-50 py-2 px-4 border border-transparent hover:border-transparent rounded-full'>
                         Getting started
                     </button>
                 </div>
-                <div></div>
-            </div>
 
-            <div className='flex flex-row mx-auto space-x-4 mt-12'>
-                <a href='#'>
-                    <FaFacebook size={30} className='text-green-400' />
-                </a>
-                <a href='#'>
-                    <FaInstagram size={30} className='text-green-400' />
-                </a>
-                <a href='#'>
-                    <FaTwitter size={30} className='text-green-400' />
-                </a>
-                <a href='#'>
-                    <FaLinkedin size={30} className='text-green-400' />
-                </a>
+                <div className='flex flex-row  mt-32'>
+                    <div className='grid grid-cols-4 mx-auto space-x-6'>
+                        <a href='#'>
+                            <FaFacebook size={30} className='text-gray-100' />
+                        </a>
+                        <a href='#'>
+                            <FaInstagram size={30} className='text-gray-100' />
+                        </a>
+                        <a href='#'>
+                            <FaTwitter size={30} className='text-gray-100' />
+                        </a>
+                        <a href='#'>
+                            <FaLinkedin size={30} className='text-gray-100' />
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     )
