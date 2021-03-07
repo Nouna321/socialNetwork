@@ -5,7 +5,12 @@ module.exports = {
         extend: {
             backgroundImage: (theme) => ({
                 img1: "url('./img/imgbg.jpg')",
+                img2: "url('./img/auth.png')",
+                login: "url('./img/login.png')",
             }),
+            fontFamily: {
+                akaya: 'Akaya',
+            },
         },
     },
     variants: {

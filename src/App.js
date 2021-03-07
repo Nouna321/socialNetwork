@@ -1,18 +1,21 @@
 import React from 'react'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import './App.css'
-import dashboard from './dashboard/dashboard'
-import Signin from './dashboard/SignIn'
-import Signup from './dashboard/SignUp'
+import dashboard from './dashboard/dash'
+import Signin from './dashboard/Form2'
+import Signup from './dashboard/Form'
 import filActualite from './filActualite/filActualite'
 import iterfaceUser from './interfaceUser/interfaceUser'
 import messagerie from './messagerie/messagerie'
 import profilUser from './profilUser/profilUser'
+//redux
+import { Provider } from 'react-redux'
+import store from './Redux/store/store'
 
-function App() {
+const App = () => {
     return (
-        <Router>
-            <div>
+        <Provider store={store}>
+            <Router>
                 <Switch>
                     <Route path='/' exact component={dashboard} />
                     <Route path='/signin' component={Signin} />
@@ -22,8 +25,8 @@ function App() {
                     <Route path='/messagerie' component={messagerie} />
                     <Route path='/profilUser' component={profilUser} />
                 </Switch>
-            </div>
-        </Router>
+            </Router>
+        </Provider>
     )
 }
 
