@@ -1,12 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import useSignUp from './useSignUp'
 import validation from './validation'
 import logo from '../img/logo.png'
 import { FcGoogle } from 'react-icons/fc'
 import { FaFacebook } from 'react-icons/fa'
+//redux
+import { signUpUser } from '../Redux/Actions/authUser'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 
 const SignUp = ({ submitForm }) => {
-    const { handleChange, values, handleSubmit, errors } = useSignUp(submitForm, validation)
+    const { errors } = useSignUp(submitForm, validation)
+    const [firstname, setFirstName] = useState('')
+    const [lastname, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [username, setUsername] = useState('')
+
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        const user = {
+            firstname: firstname,
+            lastname: lastname,
+            username: username,
+            email: email,
+            password: password,
+            confirmPassword: confirmPassword,
+        }
+
+        signUpUser(user, history, dispatch)
+    }
 
     return (
         <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100'>
@@ -32,7 +60,7 @@ const SignUp = ({ submitForm }) => {
                                 </div>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <div className=' p-8 flex items-center justify-center text-gray-400 text-2xl '>Entrer vos identifiant</div>
 
                             <div className='grid grid-rows-2 gap-4 text-gray-300'>
@@ -44,8 +72,9 @@ const SignUp = ({ submitForm }) => {
                                             type='firstN'
                                             name='firstN'
                                             placeholder='Nom'
-                                            value={values.firstN}
-                                            onChange={handleChange}
+                                            onChange={(e) => {
+                                                setFirstName(e.target.value)
+                                            }}
                                         />
                                         {errors.firstN && <p className='text-red-500'>{errors.firstN}</p>}
                                     </div>
@@ -57,8 +86,9 @@ const SignUp = ({ submitForm }) => {
                                             type='lastN'
                                             name='lastN'
                                             placeholder='Prénom'
-                                            value={values.lastN}
-                                            onChange={handleChange}
+                                            onChange={(e) => {
+                                                setLastName(e.target.value)
+                                            }}
                                         />
                                         {errors.lastN && <p className='text-red-500'>{errors.lastN}</p>}
                                     </div>
@@ -67,25 +97,26 @@ const SignUp = ({ submitForm }) => {
                                     <div className='p-4'>
                                         <input
                                             className='w-full  pl-4 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500'
-                                            id='pseudo'
-                                            type='pseudo'
-                                            name='pseudo'
-                                            placeholder='pseudo'
-                                            value={values.pseudo}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.pseudo && <p className='text-red-500'>{errors.pseudo}</p>}
-                                    </div>
-
-                                    <div className='p-4'>
-                                        <input
-                                            className='w-full  pl-4 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500'
                                             id='email'
                                             type='email'
                                             name='email'
                                             placeholder='email'
-                                            value={values.email}
-                                            onChange={handleChange}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value)
+                                            }}
+                                        />
+                                        {errors.email && <p className='text-red-500'>{errors.email}</p>}
+                                    </div>
+                                    <div className='p-4'>
+                                        <input
+                                            className='w-full  pl-4 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500'
+                                            id='pseudo'
+                                            type='pseudo'
+                                            name='pseudo'
+                                            placeholder='pseudo'
+                                            onChange={(e) => {
+                                                setUsername(e.target.value)
+                                            }}
                                         />
                                         {errors.email && <p className='text-red-500'>{errors.email}</p>}
                                     </div>
@@ -98,8 +129,9 @@ const SignUp = ({ submitForm }) => {
                                             type='password'
                                             name='password'
                                             placeholder='Mot de passe'
-                                            value={values.password}
-                                            onChange={handleChange}
+                                            onChange={(e) => {
+                                                setPassword(e.target.value)
+                                            }}
                                         />
                                         {errors.password && <p className='text-red-500'>{errors.password}</p>}
                                     </div>
@@ -110,21 +142,23 @@ const SignUp = ({ submitForm }) => {
                                             type='password'
                                             name='password2'
                                             placeholder='Confirmez votre mot de passe'
-                                            value={values.password2}
-                                            onChange={handleChange}
+                                            onChange={(e) => {
+                                                setConfirmPassword(e.target.value)
+                                            }}
                                         />
                                         {errors.password2 && <p className='text-red-500'>{errors.password2}</p>}
                                     </div>
                                 </div>
                             </div>
                             <div className='p-4 flex flex-row-reverse place-items-end'>
-                                <button className='bg-blue-800 hover:bg-white text-gray-100  hover:text-blue-800 font-bold py-2 px-8 rounded-lg' type='submit'>
+                                <button onClick={onSubmit} className='bg-blue-800 hover:bg-white text-gray-100  hover:text-blue-800 font-bold py-2 px-8 rounded-lg' type='submit'>
                                     sign Up
                                 </button>
-
-                                <a href='#' className='p-4 text-gray-600 font-sans'>
-                                    Avez vous deja un compte
-                                </a>
+                                <ul>
+                                    <li className='p-4 text-gray-600 font-sans'>
+                                        <Link to={'/signin'}> Avez vous deja un compte</Link>
+                                    </li>
+                                </ul>
                             </div>
                         </form>
                     </div>

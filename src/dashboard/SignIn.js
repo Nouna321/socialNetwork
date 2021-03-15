@@ -1,82 +1,51 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import firebase from 'firebase'
+import { LoginWithGoogle } from '../Redux/Actions/authUser'
 import useSignIn from './useSignIn'
 import validation2 from './validation2'
 import logo from '../img/logo.png'
 import { FcGoogle } from 'react-icons/fc'
 import { FaFacebook } from 'react-icons/fa'
+
 //redux
 import { loginUser } from '../Redux/Actions/authUser'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 
 export default function Signin({ loginForm }) {
-    const { handleChange2, details, handleSubmit2, errors } = useSignIn(loginForm, validation2)
-    // const [isLogin, setIsLogin] = useState(false)
-    // const [name, setName] = useState('')
-    // const [photo, setPhoto] = useState('')
+    const { errors } = useSignIn(loginForm, validation2)
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [currentUser, setCurrentUser] = useState(null)
 
     const dispatch = useDispatch()
+    const history = useHistory()
 
-    const handleEmail = (e) => {
-        const { email, value } = e.target
-        setEmail({
-            [email]: value,
-        })
-    }
-
-    const handlePass = (e) => {
-        const { password, value } = e.target
-        setPassword({
-            [password]: value,
-        })
-    }
-
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault()
         const user = {
             email: email,
             password: password,
         }
-        dispatch(loginUser(user))
+
+        loginUser(user, history, dispatch)
     }
-    // const onSubmit = () => {
-    //     const provider = new firebase.auth.GoogleAuthProvider()
 
-    //     firebase
-    //         .auth()
-    //         .signInWithPopup(provider)
-    //         .then((result) => {
-    //             /** @type {firebase.auth.OAuthCredential} */
+    const signGoogle = (e) => {
+        e.preventDefault()
+        LoginWithGoogle()
+    }
 
-    //             // This gives you a Google Access Token. You can use it to access the Google API.
-    //             const token = result.credential.accessToken
-    //             // The signed-in user info.
-    //             const user = result.user
-    //             // ...
-    //             const data = {
-    //                 storetoken: token,
-    //                 username: user.displayName,
-    //                 email: user.email,
-    //                 imageurl: user.imageURL,
-    //             }
-    //             // dispatch(loginGoogle(data))
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //         })
-    // }
-
-    // firebase.auth().onAuthStateChanged(function (user) {
-    //     if (user) {
-    //         console.log('user signed in')
-    //         console.log(user.displayName + '/n' + user.email)
-    //         // const [isLogin, setIsLogin] = useState(true)
-    //         // const [name, setName] = useState(displayName)
-    //         // const [photo, setPhoto] = useState(PhotoURL)
-    //     } else {
-    //         console.log('user is signed in')
-    //     }
+    // useEffect(() => {
+    //     firebase.auth.onAuthStateChanged((user) => {
+    //         if (user) {
+    //             this.setState({ currentUser: user })
+    //         } else {
+    //             this.setState({ currentUser: false })
+    //         }
+    //     })
     // })
 
     return (
@@ -103,7 +72,9 @@ export default function Signin({ loginForm }) {
                                     name='email'
                                     id='email'
                                     placeholder='admin@admin.co'
-                                    onChange={handleEmail}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+                                    }}
                                 />
                                 {errors.email && <p className='text-red-500'>{errors.email}</p>}
                             </div>
@@ -114,13 +85,15 @@ export default function Signin({ loginForm }) {
                                     name='password'
                                     id='password'
                                     placeholder='mot de passe'
-                                    onChange={handlePass}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value)
+                                    }}
                                 />
                                 {errors.password && <p className='text-red-500'>{errors.password}</p>}
                             </div>
 
                             <div className='flex justify-end items-end p-4'>
-                                <a href='#'>mot de passe oublier?</a>
+                                <Link to={'/forgotPass'}>mot de passe oublier?</Link>
                             </div>
                             <div className='flex items-center justify-center'>
                                 <button onClick={onSubmit} className='p-2 w-40 bg-blue-800 hover:bg-white text-gray-100  hover:text-green-800 font-bold  rounded-lg' type='submit'>
@@ -129,15 +102,17 @@ export default function Signin({ loginForm }) {
                             </div>
 
                             <div className='p-4'>
-                                <p>
-                                    vous n'avez pas de compte?
-                                    <a href='#'> cree un compte </a>
-                                </p>
+                                <p>vous n'avez pas de compte?</p>
+                                <ul>
+                                    <li>
+                                        <Link to={'/signup'}>cree un compte</Link>
+                                    </li>
+                                </ul>
                             </div>
                             <div className='flex space-x-4 justify-center items-center'>
                                 <div className='flex space-x-4 justify-center items-center border border-blue-400 p-2 rounded-lg'>
                                     <FcGoogle size={20} />
-                                    <button className='text-blue-400  '>
+                                    <button onClick={signGoogle} className='text-blue-400  '>
                                         <span>Google</span>
                                     </button>
                                 </div>

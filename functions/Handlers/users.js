@@ -2,6 +2,7 @@ const { admin, db } = require('../Util/admin')
 const { auth } = require('../Util/init')
 
 exports.signUp = (req, res) => {
+    console.log(req.body)
     let signUpinfo = {
         firstname: req.body.username,
         lastname: req.body.lastname,
@@ -23,6 +24,8 @@ exports.signUp = (req, res) => {
                     .createUserWithEmailAndPassword(signUpinfo.email, signUpinfo.password)
                     .then((data) => {
                         let userId = data.user.uid
+                        // data.sendEmailVerification()
+                        //.auth().sendPasswordResetEmail(email)
                         let newUser = {
                             FirstName: signUpinfo.firstname,
                             LastName: signUpinfo.lastname,
@@ -33,7 +36,7 @@ exports.signUp = (req, res) => {
                             uid: userId,
                             username: signUpinfo.username,
                         }
-                        db.collection('Users').doc(signUpinfo.user).set(newUser)
+                        db.collection('Users').doc(signUpinfo.username).set(newUser)
                         return res.status(200).json({ utilisateur: 'profile crée avec succés' })
                     })
                     .catch((e) => {
@@ -67,6 +70,21 @@ exports.signIn = (req, res) => {
         .catch((e) => {
             console.error(e)
             return res.status(500).json({ general: 'wrong password or email' })
+        })
+}
+
+exports.forgotPassword = (req, res) => {
+    const forgotPass = {
+        email: req.body.email,
+    }
+
+    auth.sendPasswordResetEmail(forgotPass.email)
+        .then((data) => {
+            return res.status(500).json('send email')
+        })
+        .catch((e) => {
+            console.error(e)
+            return res.status(500).json({ error: 'Error resetting password' })
         })
 }
 
@@ -135,36 +153,3 @@ exports.getfollowingUsers = (req, res) => {
             });*/
         })
 }
-
-// exports.signGoogle=(req,res) => {
-//   var user = result.user;
-//     var accessToken = result.credential.accessToken;
-//     const name = user.displayName.split("");
-//     const username = name[0].concat(name[1]);
-//     admin.firestore
-//   db.collection("Users")
-//     .doc(user.email)
-//     .get()
-//     .then((user) => {
-//       const newuser = {
-//         userId: user.uid,
-//         email: user.email,
-//         firestname: name[0],
-//         lastname: name[1],
-//         username: username,
-//         createdAt: new Date().toISOString(),
-//         imageUrl: null,
-//         bio: null,
-//         website: null,
-//         location: user.hometown,
-//       };
-
-//     })
-//     .catch((error) => {
-//       var errorCode = error.code;
-//         var errorMessage = error.message;
-//         var email = error.email;
-//         var credential = error.credential;
-//         return error;
-//     });
-// };

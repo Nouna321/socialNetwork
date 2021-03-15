@@ -1,14 +1,17 @@
 import React from 'react'
+import Post from './post'
+// import NavbarRight from './NavR'
+// import Thread from './Thread'
+// import InputPost from './InputPost'
 
 export default function FilActualite() {
-    return (
-        <div className='flex flex-row '>
+    return <Post />
+
+    {
+        /* <NavbarRight />
             <div>
-                <h1 className='text-pink-500'>hello </h1>
-            </div>
-            <div>
-                <h1 className='ml-4'> bonjour</h1>
-            </div>
-        </div>
-    )
+                <InputPost />
+                <Thread />
+            </div> */
+    }
 }

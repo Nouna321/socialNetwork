@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import firebase from 'firebase'
+
 import reportWebVitals from './reportWebVitals'
 
 const firebaseConfig = {
@@ -17,6 +18,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
+
+export const auth = firebase.auth()
 
 ReactDOM.render(
     <React.StrictMode>

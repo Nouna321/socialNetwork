@@ -13,7 +13,7 @@
 //     const username = name[0].concat(name[1]);
 //     admin.firestore
 //       .collection("Users")
-//       .doc(user.email)
+//       .where("Email","==",user.email)
 //       .get()
 //       .then((snapshot) => {
 //         const newuser = {
@@ -28,7 +28,7 @@
 //           website: null,
 //           location: user.hometown,
 //         };
-//         if (snapshot.exists) {
+//         if (snapshot.size>0) {
 //           admin.firestore.collection("Users").update(newuser);
 //         } else {
 //           admin.firestore.collection("Users").doc(username).set(newuser);
