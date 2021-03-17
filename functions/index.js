@@ -12,8 +12,8 @@ app.use(
     })
 )
 
-const { signUp, signIn, followUser, unFollow, getfollowingUsers, forgotPassword } = require('./Handlers/users')
-const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPost, getUserPosts } = require('./Handlers/data')
+const { signUp, signIn, followUser, unFollow, getfollowingUsers } = require('./Handlers/users')
+const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPost, getUserPosts, getAuthenticatedUser } = require('./Handlers/data')
 
 const { isAuth } = require('./Util/isAuth')
 
@@ -26,14 +26,15 @@ var port = process.env.PORT || 5000
 
 app.post('/users/signUp', signUp)
 app.post('/users/signIn', signIn)
-app.post('/users/forgotPassword', forgotPassword)
+
 // app.post('/users/signGoogle', signGoogle)
 app.post('/users/followUser', followUser) //en cours
 app.post('/users/unFollow', unFollow) //en cours
 app.post('/users/getFollowingUsers', getfollowingUsers) //en cours
 app.get('/users/NotifLikeData', NotifLikeData)
 app.get('/users/getUserDetails/:username', getUserDetails)
-app.get('/data/getUserPosts', getUserPosts)
+//app.get('/data/getUserPosts', getUserPosts)
+app.get('/users/getAuthenticatedUser',isAuth ,getAuthenticatedUser)
 app.get('/data/getUserPost/:postId', getUserPost)
 app.post('/data/postUserPost', postUserPost)
 app.post('/data/suppUserPost/:postId', suppUserPost)

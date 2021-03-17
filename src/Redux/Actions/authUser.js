@@ -1,25 +1,39 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD } from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD,LOADING_USER } from '../types'
 import axios from 'axios'
 import firebase from 'firebase'
+const { fire } = require("../../init");
 
 export const LoginWithGoogle = () => {
     var provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('email')
     provider.addScope('profile')
-    firebase
+    fire
+                .firestore()
+                .collection('Users')
+                .where("Email", "==", "sevenzhunter@gmail.com")
+                .get()
+                .then((snapshot) => {
+                    console.log(snapshot.size)
+                    console.log(snapshot)}
+                    )
+                    .catch((e) => {
+                        console.log(e)
+                    })
+    fire
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
             console.log('hello')
             var user = result.user
             var accessToken = result.credential.accessToken
-            const name = user.displayName.split('')
+            const name = user.displayName.split(' ')
+            
             const username = name[0].concat(name[1])
-            firebase
+           
+            fire
                 .firestore()
                 .collection('Users')
-                .where('Email', '==', user.email)
-                .limit(1)
+                .where("Email", "==", "sevenzhunter@gmail.com")
                 .get()
                 .then((snapshot) => {
                     console.log(snapshot.size)
@@ -41,6 +55,8 @@ export const LoginWithGoogle = () => {
                             firebase.firestore().collection('Users').doc(id).update(newuser)
                         })
                     } else {
+                       
+                        
                         firebase.firestore().collection('Users').doc(username).set(newuser)
                     }
                 })
@@ -79,9 +95,11 @@ export const loginUser = (userData, history, dispatch) => {
         .post('/users/signIn', userData)
         .then((res) => {
             console.log('yes')
-            setAuthorizationHeader(res.data.token)
-            dispatch({ type: CLEAR_ERRORS })
-            history.push('/filActualite')
+            console.log(res.data)
+            setAuthorizationHeader(res.data)
+            getUserData(dispatch);
+            //dispatch({ type: CLEAR_ERRORS })
+           // history.push('/filActualite')
         })
         .catch((err) => {
             dispatch({
@@ -105,6 +123,20 @@ export const loginUser = (userData, history, dispatch) => {
 //             })
 //         })
 // }
+
+export const getUserData =(dispatch) => {
+    dispatch({ type: LOADING_USER });
+    console.log("here")
+    axios
+      .get('/users/getAuthenticatedUser')
+      .then((res) => {
+        dispatch({
+          type: SET_USER,
+          payload: res.data
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
 export const forgotPassword = (userData, history, dispatch) => {
     dispatch({ type: FORGOT_PASSWORD })

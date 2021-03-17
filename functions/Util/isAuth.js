@@ -1,29 +1,42 @@
 const { admin, db } = require("./admin");
 
-module.exports = (req, res, next) => {
+exports.isAuth = (req, res, next) => {
   let idToken;
-  if (req.headers.auth) {
-    idToken = req.headers.auth;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+    console.log(idToken)
   } else {
-    return res.status(500).json({ general: "no auth token found" });
+    console.error('No token found');
+    return res.status(403).json({ error: 'Unauthorized' });
   }
   admin
     .auth()
     .verifyIdToken(idToken)
     .then((data) => {
-      req.user = data;
+      //req.user = data;
+      console.log ("yes");
 
-      return db
+      const snap= db
         .collection("Users")
         .where("uid", "==", req.user.uid)
         .limit(1)
         .get();
+        console.log(snap)
+    }).catch((e) => {
+      console.log(e)
     })
-    .then((user) => {
+    /*.then((user) => {
+      console.log("je ne comprends pas")
+      console.log(user.docs[0].data())
       req.user.username = user.docs[0].data().username;
+      
       return next();
     })
     .catch((e) => {
-      res.status(500).json({ general: "erreur" });
-    });
+      console.log("merde")
+      res.status(500).send(e);
+    });*/
 };

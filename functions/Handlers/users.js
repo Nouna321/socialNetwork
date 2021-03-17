@@ -1,5 +1,5 @@
 const { admin, db } = require('../Util/admin')
-const { auth } = require('../Util/init')
+const { auth } = require('../../src/init')
 
 exports.signUp = (req, res) => {
     console.log(req.body)
@@ -56,15 +56,16 @@ exports.signIn = (req, res) => {
         email: req.body.email,
         password: req.body.password,
     }
+    console.log(userInfo)
 
     auth.signInWithEmailAndPassword(userInfo.email, userInfo.password)
         .then((data) => {
+            console.log("yes")
             let currentToken = data.user.getIdToken()
             return currentToken
         })
         .then((Token) => {
             const idToken = Token
-            console.log('bien joué ')
             res.status(200).send(idToken)
         })
         .catch((e) => {
@@ -73,20 +74,8 @@ exports.signIn = (req, res) => {
         })
 }
 
-exports.forgotPassword = (req, res) => {
-    const forgotPass = {
-        email: req.body.email,
-    }
 
-    auth.sendPasswordResetEmail(forgotPass.email)
-        .then((data) => {
-            return res.status(500).json('send email')
-        })
-        .catch((e) => {
-            console.error(e)
-            return res.status(500).json({ error: 'Error resetting password' })
-        })
-}
+
 
 exports.followUser = (req, res) => {
     let newFollow = {

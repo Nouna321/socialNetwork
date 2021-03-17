@@ -10,6 +10,7 @@ export default function (state = initialState, action) {
     case SET_USER:
       return {
         ...state,
+        credentials:action.payload,
         authenticated: true,
         loading: false,
       };

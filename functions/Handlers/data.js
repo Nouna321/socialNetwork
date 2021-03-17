@@ -1,5 +1,4 @@
-const { admin, db } = require('../Util/admin')
-const { auth } = require('../Util/init')
+const { db } = require('../Util/admin')
 
 exports.NotifLikeData = (req, res) => {
     let userData = {}
@@ -43,6 +42,23 @@ exports.NotifLikeData = (req, res) => {
             return res.status(500).json({ error: err.code })
         })
 }
+exports.getAuthenticatedUser = (req, res) => {
+    let userData = {};
+    console.log(req.user.username)
+    db.doc(`/users/${req.user.username}`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          userData.credentials = doc.data();
+        }
+        return res.json(userData);
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({ error: err.code });
+      });
+  };
+
 exports.getUserDetails = (req, res) => {
     let userData = {}
     console.log(req.params.username)
