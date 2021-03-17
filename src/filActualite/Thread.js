@@ -8,7 +8,7 @@ export default function Thread() {
     const data = useSelector((state) => state.data)
 
     useEffect(() => {
-        getPosts(dispatch, 'sAukMw2JDFBud0KV47KI')
+        getPosts(dispatch, '0MXHiP3iRYYmRF6RAr52')
         console.log(data)
     }, [])
 

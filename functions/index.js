@@ -13,7 +13,7 @@ app.use(
 )
 
 const { signUp, signIn, followUser, unFollow, getfollowingUsers, forgotPassword } = require('./Handlers/users')
-const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPost, getUserPosts } = require('./Handlers/data')
+const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPost, commentOnPost } = require('./Handlers/data')
 
 const { isAuth } = require('./Util/isAuth')
 
@@ -33,7 +33,8 @@ app.post('/users/unFollow', unFollow) //en cours
 app.post('/users/getFollowingUsers', getfollowingUsers) //en cours
 app.get('/users/NotifLikeData', NotifLikeData)
 app.get('/users/getUserDetails/:username', getUserDetails)
-app.get('/data/getUserPosts', getUserPosts)
+// app.get('/data/getUserPosts', getUserPosts)
+app.post('/data/commentOnPost/:postId', commentOnPost)
 app.get('/data/getUserPost/:postId', getUserPost)
 app.post('/data/postUserPost', postUserPost)
 app.post('/data/suppUserPost/:postId', suppUserPost)

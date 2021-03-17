@@ -9,6 +9,7 @@ import iterfaceUser from './interfaceUser/interfaceUser'
 import messagerie from './messagerie/messagerie'
 import profilUser from './profilUser/profilUser'
 import ForgotPass from './dashboard/ForgotPass'
+import Card from './filActualite/Card'
 
 //redux
 import { Provider } from 'react-redux'
@@ -27,6 +28,7 @@ const App = () => {
                     <Route path='/messagerie' component={messagerie} />
                     <Route path='/profilUser' component={profilUser} />
                     <Route path='/forgotPass' component={ForgotPass} />
+                    <Route path='/card' component={Card} />
                 </Switch>
             </Router>
         </Provider>

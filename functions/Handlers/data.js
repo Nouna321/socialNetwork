@@ -129,7 +129,15 @@ exports.postUserPost = (req, res) => {
         .add(newPost)
         .then((doc) => {
             newPost.postId = doc.id
-            res.status(200).send(newPost)
+            db.collection('userPosts')
+                .doc(doc.id)
+                .set(newPost)
+                .then(() => {
+                    res.status(200).send(newPost)
+                })
+                .catch((e) => {
+                    res.status(500).json({ error: 'error' })
+                })
         })
         .catch((e) => {
             res.status(500).send(e)
@@ -219,5 +227,36 @@ exports.getFollowerPosts = (req, res) => {
         })
         .catch((e) => {
             res.send(e)
+        })
+}
+
+//commentaire dun post
+exports.commentOnPost = (req, res) => {
+    const newComment = {
+        body: req.body.body,
+        creatAt: new Date().toISOString(),
+        postId: req.params.postId,
+        username: req.body.username,
+        userImage: req.body.userImage,
+    }
+    console.log(newComment)
+
+    db.doc(`/userPosts/${req.params.postId}`)
+        .get()
+        .then((doc) => {
+            if (!doc.exists) {
+                return res.status(404).json({ error: 'post inexistant' })
+            }
+            return doc.ref.update({ commentCount: doc.data().commentCount + 1 })
+        })
+        .then(() => {
+            return db.doc(`/userPosts/${req.params.postId}`).collection('comments').add(newComment)
+        })
+        .then(() => {
+            res.json(newComment)
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(500).json({ error: 'Something went wrong' })
         })
 }
