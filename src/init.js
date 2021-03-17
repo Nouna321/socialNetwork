@@ -1,3 +1,4 @@
+
 const firebase = require("firebase");
 const config = {
   apiKey: "AIzaSyAfVUAUGe0KuOV6xQA9ymyALyA8eAnfX5s",
@@ -14,3 +15,5 @@ const fire = firebase.default.initializeApp(config);
 const auth = firebase.default.auth();
 
 module.exports = { fire, auth };
+
+

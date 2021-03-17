@@ -1,5 +1,9 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD,LOADING_USER } from '../types'
+
+
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER } from '../types'
+
 import axios from 'axios'
+import { auth } from '../../init'
 import firebase from 'firebase'
 const { fire } = require("../../init");
 
@@ -90,22 +94,19 @@ export const signUpUser = (userData, history, dispatch) => {
 }
 
 export const loginUser = (userData, history, dispatch) => {
-    dispatch({ type: LOADING_UI })
-    axios
-        .post('/users/signIn', userData)
-        .then((res) => {
-            console.log('yes')
-            console.log(res.data)
-            setAuthorizationHeader(res.data)
-            getUserData(dispatch);
-            //dispatch({ type: CLEAR_ERRORS })
-           // history.push('/filActualite')
-        })
-        .catch((err) => {
+
+    dispatch({ type: LOADING_USER })
+    auth.signInWithEmailAndPassword(userData.email, userData.password)
+        .then((data) => {
             dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data,
+                type: SET_USER,
+                payload: data,
             })
+            history.push('/filActualite')
+        })
+        .catch((e) => {
+            console.error(e)
+            dispatch({ type: SET_ERRORS, payload: e.data })
         })
 }
 

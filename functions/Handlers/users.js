@@ -51,28 +51,28 @@ exports.signUp = (req, res) => {
         })
 }
 
-exports.signIn = (req, res) => {
-    const userInfo = {
-        email: req.body.email,
-        password: req.body.password,
-    }
-    console.log(userInfo)
 
-    auth.signInWithEmailAndPassword(userInfo.email, userInfo.password)
-        .then((data) => {
-            console.log("yes")
-            let currentToken = data.user.getIdToken()
-            return currentToken
-        })
-        .then((Token) => {
-            const idToken = Token
-            res.status(200).send(idToken)
-        })
-        .catch((e) => {
-            console.error(e)
-            return res.status(500).json({ general: 'wrong password or email' })
-        })
-}
+// exports.signIn = (req, res) => {
+//     const userInfo = {
+//         email: req.body.email,
+//         password: req.body.password,
+//     }
+
+//     auth.signInWithEmailAndPassword(userInfo.email, userInfo.password)
+//         .then((data) => {
+//             let currentToken = data.user.getIdToken()
+//             return currentToken
+//         })
+//         .then((Token) => {
+//             const idToken = Token
+//             console.log('bien joué ')
+//             res.status(200).send(idToken)
+//         })
+//         .catch((e) => {
+//             console.error(e)
+//             return res.status(500).json({ general: 'wrong password or email' })
+//         })
+// }
 
 
 
