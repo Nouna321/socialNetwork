@@ -3,10 +3,10 @@ import React from 'react'
 export default function Post4() {
     return (
         <div className='h-screen bg-gray-200'>
-            <h1 className='text-center p-4'>Vos Suggestions</h1>
+            <h1 className='text-center p-4 font-extrabold text-indigo-500'>Vos Suggestions</h1>
 
             <div className=' grid grid-rows  '>
-                <div className='grid grid-cols-3 h-full w-full border border-gray-800'>
+                <div className='grid grid-cols-3 h-full w-full  shadow-lg'>
                     <div className=' flex justify-center p-1'>
                         <img
                             className='w-10 h-10 rounded-full object-cover  shadow'
@@ -23,12 +23,12 @@ export default function Post4() {
                         </button>
                     </div>
                 </div>
-                <div className='pt-10'>
+                <div className='pt-14'>
                     <div className=' h-full w-full  '>
                         <div className='text-center  pb-2'>
-                            <p>Amis en ligne</p>
+                            <p className='font-extrabold text-indigo-500'>Amis en ligne</p>
                         </div>
-                        <div className='flex flex-row pl-2 pt-4 border-t border-gray-800'>
+                        <div className='flex flex-row pl-2 pt-4 shadow-lg '>
                             <div class='relative inline-block'>
                                 <img
                                     class='inline-block object-cover w-12 h-12 rounded-full'

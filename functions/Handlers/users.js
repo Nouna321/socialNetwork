@@ -1,5 +1,5 @@
 const { admin, db } = require('../Util/admin')
-const { auth } = require('../Util/init')
+const { auth } = require('../../src/init')
 
 exports.signUp = (req, res) => {
     console.log(req.body)
@@ -51,27 +51,27 @@ exports.signUp = (req, res) => {
         })
 }
 
-exports.signIn = (req, res) => {
-    const userInfo = {
-        email: req.body.email,
-        password: req.body.password,
-    }
+// exports.signIn = (req, res) => {
+//     const userInfo = {
+//         email: req.body.email,
+//         password: req.body.password,
+//     }
 
-    auth.signInWithEmailAndPassword(userInfo.email, userInfo.password)
-        .then((data) => {
-            let currentToken = data.user.getIdToken()
-            return currentToken
-        })
-        .then((Token) => {
-            const idToken = Token
-            console.log('bien joué ')
-            res.status(200).send(idToken)
-        })
-        .catch((e) => {
-            console.error(e)
-            return res.status(500).json({ general: 'wrong password or email' })
-        })
-}
+//     auth.signInWithEmailAndPassword(userInfo.email, userInfo.password)
+//         .then((data) => {
+//             let currentToken = data.user.getIdToken()
+//             return currentToken
+//         })
+//         .then((Token) => {
+//             const idToken = Token
+//             console.log('bien joué ')
+//             res.status(200).send(idToken)
+//         })
+//         .catch((e) => {
+//             console.error(e)
+//             return res.status(500).json({ general: 'wrong password or email' })
+//         })
+// }
 
 exports.forgotPassword = (req, res) => {
     const forgotPass = {

@@ -10,7 +10,7 @@ export default function Publication(props) {
     const [showComments, setShowComments] = useState(false)
     console.log(showComments)
     return (
-        <div className='pt-12 mr-6'>
+        <div className='pt-12 '>
             <div className='grid grid-rows bg-gray-200 shadow-lg rounded-lg  md:mx-auto  max-w-md md:max-w-2xl px-4 py-4'>
                 <div className='flex '>
                     <small className=' text-sm text-gray-500 mx-auto'>{moment(props.post.createdAt).startOf('hour').fromNow()}</small>

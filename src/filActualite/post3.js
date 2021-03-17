@@ -24,7 +24,7 @@ export default function Post3() {
         submitPost(post, dispatch)
     }
     return (
-        <div className='flex flex-col   mt-4 '>
+        <div className='flex flex-col  mt-4 '>
             <div>
                 <div className=' '>
                     {/* <input type='text' name='username' onChange={(e) => setUserName(e.target.value)} value={username} /> */}

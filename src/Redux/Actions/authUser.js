@@ -1,5 +1,6 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD } from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER } from '../types'
 import axios from 'axios'
+import { auth } from '../../init'
 import firebase from 'firebase'
 
 export const LoginWithGoogle = () => {
@@ -74,20 +75,18 @@ export const signUpUser = (userData, history, dispatch) => {
 }
 
 export const loginUser = (userData, history, dispatch) => {
-    dispatch({ type: LOADING_UI })
-    axios
-        .post('/users/signIn', userData)
-        .then((res) => {
-            console.log('yes')
-            setAuthorizationHeader(res.data.token)
-            dispatch({ type: CLEAR_ERRORS })
+    dispatch({ type: LOADING_USER })
+    auth.signInWithEmailAndPassword(userData.email, userData.password)
+        .then((data) => {
+            dispatch({
+                type: SET_USER,
+                payload: data,
+            })
             history.push('/filActualite')
         })
-        .catch((err) => {
-            dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data,
-            })
+        .catch((e) => {
+            console.error(e)
+            dispatch({ type: SET_ERRORS, payload: e.data })
         })
 }
 

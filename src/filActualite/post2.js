@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 export default function post2() {
     return (
-        <div className='flex flex-col overflow-y-auto  h-screen bg-gray-200 w-72'>
+        <div className='flex flex-col overflow-y-auto  h-screen bg-gray-200 w-52'>
             <ul className='relative  list-none h-full mx-auto'>
                 <li className='mb-12  justify-center  mx-auto   flex pt-4  '>
                     <div className=' text-4xl text-gray-50 font-semibold '>
@@ -20,21 +20,21 @@ export default function post2() {
                 </li>
 
                 <div className=' justify-center   flex relative  p-4'>
-                    <div className='mr-4 my-auto text-red-900'>
+                    <div className='mr-4 my-auto text-gray-500'>
                         <MdPages size={25} />
                     </div>
-                    <div className='font-semibold text-lg text-red-900 flex-auto my-1'>
+                    <div className='font-semibold text-lg text-gray-500 flex-auto my-1'>
                         <span>
                             <Link to={'/pages'}>Pages</Link>
                         </span>
                     </div>
                 </div>
 
-                <div className='justify-center  text-red-900 flex relative  p-4'>
-                    <div className='mr-4 my-auto text-red-900'>
-                        <GrGroup size={25} className='text-red-900' />
+                <div className='justify-center   flex relative  p-4'>
+                    <div className='mr-4 my-auto text-gray-500'>
+                        <GrGroup size={25} />
                     </div>
-                    <div className='font-semibold text-lg text-red-900 flex-auto my-1'>
+                    <div className='font-semibold text-lg text-gray-500 flex-auto my-1'>
                         <span>
                             <Link to={'/club'}>Mes Clubs</Link>
                         </span>
@@ -42,10 +42,10 @@ export default function post2() {
                 </div>
 
                 <div className='justify-center   flex relative p-4 '>
-                    <div className='mr-4 my-auto text-red-900'>
+                    <div className='mr-4 my-auto text-gray-500'>
                         <BsBookmarkFill size={25} />
                     </div>
-                    <div className='font-semibold text-lg text-red-900  flex-auto my-1'>
+                    <div className='font-semibold text-lg text-gray-500  flex-auto my-1'>
                         <span>
                             <Link to={'/ofrreE'}>Offre d'Emploi</Link>
                         </span>
@@ -53,10 +53,10 @@ export default function post2() {
                 </div>
 
                 <div className='justify-center  flex relative  p-4'>
-                    <div className='mr-4 my-auto text-red-900'>
+                    <div className='mr-4 my-auto text-gray-500'>
                         <GiBookshelf size={25} />
                     </div>
-                    <div className='font-semibold text-lg text-red-900 flex-auto my-1'>
+                    <div className='font-semibold text-lg text-gray-500 flex-auto my-1'>
                         <span>
                             <Link to={'/elerning'}>E-learning</Link>
                         </span>
@@ -64,10 +64,10 @@ export default function post2() {
                 </div>
 
                 <div className=' justify-center   flex relative p-4 '>
-                    <div className='mr-4 my-auto text-red-900'>
+                    <div className='mr-4 my-auto text-gray-500'>
                         <MdEventAvailable size={25} />
                     </div>
-                    <div className='font-semibold text-lg text-red-900 flex-auto my-1'>
+                    <div className='font-semibold text-lg text-gray-500 flex-auto my-1'>
                         <span>
                             <Link to={'/evenement'}>Evenements</Link>
                         </span>

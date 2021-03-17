@@ -1,5 +1,4 @@
-const { admin, db } = require('../Util/admin')
-const { auth } = require('../Util/init')
+const { db } = require('../Util/admin')
 
 exports.NotifLikeData = (req, res) => {
     let userData = {}

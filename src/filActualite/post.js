@@ -8,14 +8,14 @@ export default function post() {
         <div className=''>
             <Post1 />
 
-            <div className='flex flex-row'>
-                <div className='w-2/5'>
+            <div className='grid grid-cols-5'>
+                <div className=''>
                     <Post2 />
                 </div>
-                <div className='w-3/5'>
+                <div className='col-span-3'>
                     <Post3 />
                 </div>
-                <div className='w-1/5  '>
+                <div className=' '>
                     <Post4 />
                 </div>
             </div>

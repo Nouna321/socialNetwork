@@ -2,12 +2,17 @@ import React from 'react'
 import { TiMessages } from 'react-icons/ti'
 import { BiSearch } from 'react-icons/bi'
 import ClickAway from './clickAway'
-import AffichInvit from './affichInvit'
+import { FaUserFriends } from 'react-icons'
+import { useSelector } from 'react-redux'
+import { FirebaseAuthConsumer } from '@react-firebase/auth'
+
 import AffichNotif from './affichNotif'
 import { Link } from 'react-router-dom'
-export default function post1() {
+
+export default function Post1() {
+    const user = useSelector((state) => state.user)
     return (
-        <div className='w-full h-12 bg-blue-800 flex flex-row shadow-xl   items-center  justify-center'>
+        <div className='w-full h-12 bg-gray-800 flex flex-row shadow-xl   items-center  justify-center'>
             <div className='  flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
                 <div className='flex-shrink-0 flex items-center'>
                     <h1>Logo</h1>
@@ -25,19 +30,26 @@ export default function post1() {
                 </div>
             </div>
 
-            <div className='absolute inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
-                <nav className='mr-14 flex flex-row-3  p-1 w-plein rounded-full text-gray-400  focus:outline-none'>
-                    <span className='sr-only'>View notifications</span>
+            <div className=' grid grid-cols-3 gap-8  text-gray-400  '>
+                <div>
+                    <Link to='/messagerie'>
+                        <TiMessages className=' text-gray-100' size={30} />
+                    </Link>
+                </div>
 
-                    <button className='ml-24 mr-12 w-14 px-3 '>
-                        <Link to='/messagerie'>
-                            <TiMessages className=' text-gray-100' size={35} />
-                        </Link>
-                    </button>
-                    <AffichInvit />
+                {/* <div>
+                    <FaUserFriends className=' text-gray-100' size={30} />
+                </div> */}
+
+                <div>
                     <AffichNotif />
-                </nav>
+                </div>
             </div>
+            <FirebaseAuthConsumer>
+                {({ isSignedIn, user, providerId }) => {
+                    return <h3 className='text-gray-100'>{user.displayName}</h3>
+                }}
+            </FirebaseAuthConsumer>
             <div className='ml-28 mb-4'>
                 <ClickAway />
             </div>

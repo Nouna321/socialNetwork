@@ -25,7 +25,7 @@ var port = process.env.PORT || 5000
 // API endpoints
 
 app.post('/users/signUp', signUp)
-app.post('/users/signIn', signIn)
+// app.post('/users/signIn', signIn)
 app.post('/users/forgotPassword', forgotPassword)
 // app.post('/users/signGoogle', signGoogle)
 app.post('/users/followUser', followUser) //en cours

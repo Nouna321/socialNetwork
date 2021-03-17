@@ -15,10 +15,10 @@ export default function AffichNotif() {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <div className=''>
-                <button type='button' onClick={handleClick} className='mr-12 w-14 px-3 '>
-                    <a className='px-3 py-2  '>
-                        <MdNotifications className='text-3xl text-gray-100' size={35} />
+            <div>
+                <button type='button' onClick={handleClick} className=' '>
+                    <a className=' '>
+                        <MdNotifications className='text-3xl text-gray-100' size={30} />
                     </a>
                 </button>
 
