@@ -1,14 +1,12 @@
 
-
 import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER } from '../types'
-
 import axios from 'axios'
-import { auth } from '../../init'
-import firebase from 'firebase'
-const { fire } = require("../../init");
+const {fire } = require("../../init");
+
+
 
 export const LoginWithGoogle = () => {
-    var provider = new firebase.auth.GoogleAuthProvider()
+    var provider = new fire.auth.GoogleAuthProvider()
     provider.addScope('email')
     provider.addScope('profile')
     fire
@@ -56,12 +54,12 @@ export const LoginWithGoogle = () => {
                     if (snapshot.size > 0) {
                         snapshot.forEach((doc) => {
                             const id = doc.id
-                            firebase.firestore().collection('Users').doc(id).update(newuser)
+                            fire.firestore().collection('Users').doc(id).update(newuser)
                         })
                     } else {
                        
                         
-                        firebase.firestore().collection('Users').doc(username).set(newuser)
+                        fire.firestore().collection('Users').doc(username).set(newuser)
                     }
                 })
                 .then(() => {
@@ -94,20 +92,21 @@ export const signUpUser = (userData, history, dispatch) => {
 }
 
 export const loginUser = (userData, history, dispatch) => {
+    fire.auth().signInWithEmailAndPassword(userData.email, userData.password)
+        .then((data) => { 
+            const uid= data.user.uid;
+            localStorage.setItem("uid",uid)
+            //getUserData(dispatch,history,uid).then(
+                history.push("./filActualite")
+          //  )
+            
 
-    dispatch({ type: LOADING_USER })
-    auth.signInWithEmailAndPassword(userData.email, userData.password)
-        .then((data) => {
-            dispatch({
-                type: SET_USER,
-                payload: data,
             })
-            history.push('/filActualite')
-        })
         .catch((e) => {
             console.error(e)
             dispatch({ type: SET_ERRORS, payload: e.data })
         })
+        
 }
 
 // export const loginGoogle = (data) => (dispatch) => {
@@ -120,23 +119,28 @@ export const loginUser = (userData, history, dispatch) => {
 //         .catch((err) => {
 //             dispatch({
 //                 type: SET_ERRORS,
-//                 payload: err.response.data,
+//                 payload: err.response.data, 
 //             })
 //         })
 // }
 
-export const getUserData =(dispatch) => {
-    dispatch({ type: LOADING_USER });
-    console.log("here")
+export const  getUserData =  (dispatch,data) => {
+
+    const uid={id:data}
+    console.log(uid)
+    dispatch({ type: LOADING_USER })
     axios
-      .get('/users/getAuthenticatedUser')
+      .post('/data/getAuthenticatedUser',uid)
       .then((res) => {
+        
         dispatch({
           type: SET_USER,
           payload: res.data
         });
+        localStorage.setItem("User",JSON.stringify(res.data))
       })
       .catch((err) => console.log(err));
+      return;
   };
 
 export const forgotPassword = (userData, history, dispatch) => {
@@ -145,7 +149,6 @@ export const forgotPassword = (userData, history, dispatch) => {
         .post('/users/forgotPassword', userData)
         .then((res) => {
             console.log('yes')
-            setAuthorizationHeader(res.data.token)
             dispatch({ type: CLEAR_ERRORS })
             // history.push('/')
         })
@@ -157,8 +160,4 @@ export const forgotPassword = (userData, history, dispatch) => {
         })
 }
 
-const setAuthorizationHeader = (token) => {
-    const FBIdToken = `Bearer ${token}`
-    localStorage.setItem('FBIdToken', FBIdToken)
-    axios.defaults.headers.common['Authorization'] = FBIdToken
-}
+

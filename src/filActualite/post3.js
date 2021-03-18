@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { submitPost } from '../Redux/Actions/postAction'
 import { FaSearch } from 'react-icons/fa'
 import { FaPhotoVideo } from 'react-icons/fa'
@@ -12,13 +12,15 @@ import Thread from './Thread'
 export default function Post3() {
     const [username, setUserName] = useState('')
     const [body, setBody] = useState('')
-    //   const data = useSelector((state) => state.data)
+    const data = useSelector((state) => state.data)
     const dispatch = useDispatch()
+    const userInfo= localStorage.User;
+    const user=JSON.parse(userInfo)
 
     function onCreatePost(e) {
         e.preventDefault()
         const post = {
-            username,
+            username:user.credentials.username,
             body,
         }
         submitPost(post, dispatch)
@@ -27,7 +29,7 @@ export default function Post3() {
         <div className='flex flex-col  mt-4 '>
             <div>
                 <div className=' '>
-                    {/* <input type='text' name='username' onChange={(e) => setUserName(e.target.value)} value={username} /> */}
+                    
                     <TextField className='w-96 rounded-full' label='Publier' onChange={(e) => setBody(e.target.value)} value={body} />
                     <button onClick={onCreatePost} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-18' type='submit' name='submit'>
                         Publier

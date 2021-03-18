@@ -7,6 +7,8 @@ export default function Comments(props) {
     const dispatch = useDispatch()
     const data = useSelector((state) => state.data)
     const postId = props.postId
+    const comments=props.comments
+    console.log(typeof(comments))
 
     function onCreateComment(e) {
         e.preventDefault()
@@ -35,7 +37,10 @@ export default function Comments(props) {
                 </button>
             </div>
             <div />
-            {props.comments.map((comment) => {
+            {typeof(comments) != "undefined"?
+            
+            
+            comments.map((comment) => {
                 return (
                     <div id='task-comments' className=' border-b-2'>
                         <div className='bg-white rounded-lg   flex flex-col justify-center items-center md:items-start  '>
@@ -54,7 +59,8 @@ export default function Comments(props) {
                         </div>
                     </div>
                 )
-            })}
+            })
+        :null}
         </div>
     )
 }

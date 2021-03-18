@@ -1,9 +1,11 @@
 import { GET_POST, SUBMIT_POST, DELETE_POST, SUBMIT_COMMENT } from '../types'
 import axios from 'axios'
 
-export const getPosts = (dispatch, postId) => {
+export const getPosts = (dispatch, name) => {
+    const user={username:name}
+    console.log(user)
     axios
-        .get(`/data/getUserPost/${postId}`)
+        .post(`/data/getAllPosts`,user)
         .then((res) => {
             dispatch({ type: GET_POST, payload: res.data })
         })

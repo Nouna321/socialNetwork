@@ -1,16 +1,24 @@
-import React from 'react'
+import React ,{useEffect,useState} from 'react'
+
 import { TiMessages } from 'react-icons/ti'
 import { BiSearch } from 'react-icons/bi'
 import ClickAway from './clickAway'
 import { FaUserFriends } from 'react-icons'
 import { useSelector } from 'react-redux'
-import { FirebaseAuthConsumer } from '@react-firebase/auth'
+
 
 import AffichNotif from './affichNotif'
 import { Link } from 'react-router-dom'
 
+
 export default function Post1() {
-    const user = useSelector((state) => state.user)
+    const User = useSelector((state) => state.user)
+    const uid = localStorage.uid;
+    const userInfo= localStorage.User;
+    const user=JSON.parse(userInfo)
+    
+
+
     return (
         <div className='w-full h-12 bg-gray-800 flex flex-row shadow-xl   items-center  justify-center'>
             <div className='  flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
@@ -32,9 +40,11 @@ export default function Post1() {
 
             <div className=' grid grid-cols-3 gap-8  text-gray-400  '>
                 <div>
+                    
                     <Link to='/messagerie'>
                         <TiMessages className=' text-gray-100' size={30} />
                     </Link>
+                    <h3></h3>
                 </div>
 
                 {/* <div>
@@ -45,11 +55,8 @@ export default function Post1() {
                     <AffichNotif />
                 </div>
             </div>
-            <FirebaseAuthConsumer>
-                {({ isSignedIn, user, providerId }) => {
-                    return <h3 className='text-gray-100'>{user.displayName}</h3>
-                }}
-            </FirebaseAuthConsumer>
+            
+                    <h3 className='text-gray-100'>{user.credentials.username}</h3>
             <div className='ml-28 mb-4'>
                 <ClickAway />
             </div>

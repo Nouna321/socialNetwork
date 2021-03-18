@@ -7,11 +7,11 @@ const initialState = {
 export default function postsReducer(state = initialState, action) {
     switch (action.type) {
         case SUBMIT_POST:
-            state.posts.push(action.payload)
+            state.posts.unshift(action.payload)
             return { ...state }
         case GET_POST:
-            state.posts.push(action.payload)
-            return { ...state }
+            return { ...state,
+            posts:action.payload }
         case DELETE_POST:
             state.posts.push(action.payload)
             return { ...state }

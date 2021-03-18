@@ -1,9 +1,17 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 import Post1 from './post1'
 import Post2 from './post2'
 import Post3 from './post3'
 import Post4 from './Post4'
-export default function post() {
+import { Link ,useHistory} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import {getUserData} from '../Redux/Actions/authUser'
+
+
+export default function Post() {
+    
+;    //console.log(User.credentials.credentials.username)
+   
     return (
         <div className=''>
             <Post1 />

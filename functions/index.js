@@ -12,13 +12,10 @@ app.use(
     })
 )
 
-<<<<<<< HEAD
-const { signUp, signIn, followUser, unFollow, getfollowingUsers } = require('./Handlers/users')
-const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPost, getUserPosts, getAuthenticatedUser } = require('./Handlers/data')
-=======
+
 const { signUp, signIn, followUser, unFollow, getfollowingUsers, forgotPassword } = require('./Handlers/users')
-const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPost, commentOnPost } = require('./Handlers/data')
->>>>>>> 58e15b8a7b774741c50a2a4ae2cd83958e01086d
+const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPosts,getUserPost, commentOnPost, getAuthenticatedUser, getAllPosts } = require('./Handlers/data')
+
 
 const { isAuth } = require('./Util/isAuth')
 
@@ -32,7 +29,7 @@ var port = process.env.PORT || 5000
 app.post('/users/signUp', signUp)
 
 // app.post('/users/signIn', signIn)
-app.post('/users/forgotPassword', forgotPassword)
+//app.post('/users/forgotPassword', forgotPassword)
 
 // app.post('/users/signGoogle', signGoogle)
 app.post('/users/followUser', followUser) //en cours
@@ -42,8 +39,11 @@ app.get('/users/NotifLikeData', NotifLikeData)
 app.get('/users/getUserDetails/:username', getUserDetails)
 
 
-// app.get('/data/getUserPosts', getUserPosts)
+
+app.post('/data/getUserPosts', getUserPosts)
+app.post('/data/getAllPosts', getAllPosts)
 app.post('/data/commentOnPost/:postId', commentOnPost)
+app.post("/data/getAuthenticatedUser",getAuthenticatedUser)
 
 app.get('/data/getUserPost/:postId', getUserPost)
 app.post('/data/postUserPost', postUserPost)

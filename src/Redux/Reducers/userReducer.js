@@ -1,30 +1,24 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,LOADING_USER } from '../types'
 
 const initialState = {
     authenticated: false,
-    loading: false,
+    loading: null,
     credentials: {},
 }
 export default function (state = initialState, action) {
-<<<<<<< HEAD
-  switch (action.type) {
-    case SET_USER:
-      return {
-        ...state,
-        credentials:action.payload,
-        authenticated: true,
-        loading: false,
-      };
-=======
+
     switch (action.type) {
+        case LOADING_USER:
+            return {
+                ...state,
+                loading:true,
+            }
         case SET_USER:
             return {
                 credentials: action.payload,
                 authenticated: true,
                 loading: false,
             }
->>>>>>> 58e15b8a7b774741c50a2a4ae2cd83958e01086d
-
         case SET_ERRORS:
             return {
                 ...state,

@@ -44,13 +44,17 @@ exports.NotifLikeData = (req, res) => {
 }
 exports.getAuthenticatedUser = (req, res) => {
     let userData = {};
-    console.log(req.user.username)
-    db.doc(`/users/${req.user.username}`)
+    console.log(req.body)
+
+    db.collection("Users").where("uid",'==',req.body.id)
       .get()
-      .then((doc) => {
-        if (doc.exists) {
-          userData.credentials = doc.data();
+      .then((snapshot) => {
+        if (snapshot.size>0) {
+            snapshot.forEach((doc) => {
+                userData.credentials = doc.data(); 
+            })
         }
+        console.log(userData)
         return res.json(userData);
       })
       .catch((err) => {
@@ -186,28 +190,46 @@ exports.suppUserPost = (req, res) => {
         })
 }
 
-// exports.getUserPosts = (req, res) => {
-//     let UserId = req.body.username
-//     let userPosts = []
-//     db.collection('userPosts')
-//         .where('username', '==', UserId)
-//         .get()
-//         .then((snapshot) => {
-//             if (snapshot.size > 0) {
-//                 snapshot.forEach((doc) => {
-//                     userPosts.push(doc.data())
-//                 })
-//                 return res.status(200).send(userPosts)
-//             } else {
-//                 return res.status(200).json({ vide: 'pas de posts' })
-//             }
-//         })
-// }
+ exports.getUserPosts = (req, res) => {
+    let UserId = req.body.username
+     let userPosts = []
+     db.collection('userPosts')
+         .where('username', '==', UserId)
+        .get()
+         .then((snapshot) => {
+            if (snapshot.size > 0) {
+                snapshot.forEach((doc) => {
+                     userPosts.push(doc.data())
+                 })
+                 return res.status(200).send(userPosts)
+             } else {
+                 return res.status(200).json({ vide: 'pas de posts' })
+             }
+         })
+ }
 
 // recup les posts
-exports.getFollowerPosts = (req, res) => {
+exports.getAllPosts = (req, res) => {
+    console.log(req.body)
     let UserId = req.body.username
-    let FollowerPosts = []
+    let AllPosts = []
+    
+    db.collection('userPosts')
+         .where('username', '==', UserId)
+        .get()
+         .then((snapshot) => {
+            if (snapshot.size > 0) {
+                snapshot.forEach((doc) => {
+                    let post
+                     post=doc.data();
+                     post.comments=[]
+                
+                     AllPosts.push(post)
+                     
+                 })
+            }}).catch((e) => {
+                console.log(e)
+            })
     db.collection('follows')
         .where('follow', '==', UserId)
         .get()
@@ -215,28 +237,35 @@ exports.getFollowerPosts = (req, res) => {
             if (snapshot.size > 0) {
                 snapshot.forEach((doc) => {
                     const followed = doc.data().followed
-                    console.log(followed)
                     db.collection('userPosts')
                         .where('username', '==', followed)
                         .orderBy('createdAt', 'asc')
                         .get()
                         .then((snap) => {
-                            console.log('yes')
-                            snap.forEach((doc) => {
-                                FollowerPosts.push(doc.data())
-                            })
-                            FollowerPosts.sort(function (a, b) {
-                                var dtA = new Date(a['createdAt']),
-                                    dtB = new Date(b['createdAt'])
-                                return dtA.getTime() - dtB.getTime()
-                            })
-                            return res.status(200).send(FollowerPosts)
+                            if(snap.size>0){
+                                snap.forEach((snapshot) => {
+                                    let Post= snapshot.data();
+                                    Post.comments=[]
+                                    AllPosts.push(Post)
+                                    })
+                                    
+                                AllPosts.sort(function (a, b) {
+                                    var dtA = new Date(a['createdAt']),
+                                        dtB = new Date(b['createdAt'])
+                                    return  dtB.getTime()-dtA.getTime()
+                                })
+                                
+                                return res.status(200).send(AllPosts)
+                                
+                            }
+                            
+                           
                         })
                         .catch((e) => {
                             res.status(500)
                         })
                 })
-                console.log(FollowerPosts)
+                
             } else {
                 return res.status(201).json({ follower: 'pas de followers' })
             }
@@ -244,7 +273,7 @@ exports.getFollowerPosts = (req, res) => {
         .catch((e) => {
             res.send(e)
         })
-}
+    }
 
 //commentaire dun post
 exports.commentOnPost = (req, res) => {

@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect }  from 'react'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import 'firebase/auth'
 import { FirebaseAuthProvider } from '@react-firebase/auth'
+import { Provider, useDispatch } from 'react-redux'
+import store from './Redux/store/store'
+import firebase from 'firebase'
+import { getUserData } from './Redux/Actions/authUser'
 import './App.css'
 import dashboard from './dashboard/dash'
 import Signin from './dashboard/SignIn'
@@ -12,13 +16,11 @@ import messagerie from './messagerie/messagerie'
 import profilUser from './profilUser/profilUser'
 import ForgotPass from './dashboard/ForgotPass'
 import Card from './filActualite/Card'
+const config =require("./config")
 
 //redux
-import { Provider } from 'react-redux'
-import store from './Redux/store/store'
-import firebase from 'firebase'
 
-const config = require('./config')
+
 
 const App = () => {
     return (

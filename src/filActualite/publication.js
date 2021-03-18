@@ -9,6 +9,7 @@ moment().format()
 export default function Publication(props) {
     const [showComments, setShowComments] = useState(false)
     console.log(showComments)
+    console.log(props.post.comments)
     return (
         <div className='pt-12 '>
             <div className='grid grid-rows bg-gray-200 shadow-lg rounded-lg  md:mx-auto  max-w-md md:max-w-2xl px-4 py-4'>
