@@ -12,10 +12,22 @@ app.use(
     })
 )
 
-
 const { signUp, signIn, followUser, unFollow, getfollowingUsers, forgotPassword } = require('./Handlers/users')
-const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPosts,getUserPost, commentOnPost, getAuthenticatedUser, getAllPosts,getCommentOnPost } = require('./Handlers/data')
-
+const {
+    NotifLikeData,
+    getUserDetails,
+    postUserPost,
+    suppUserPost,
+    getUserPosts,
+    getUserPost,
+    commentOnPost,
+    getAuthenticatedUser,
+    getAllPosts,
+    getCommentOnPost,
+    uploadImage,
+    deleteImage,
+    likePostUser,
+} = require('./Handlers/data')
 
 const { isAuth } = require('./Util/isAuth')
 
@@ -35,18 +47,19 @@ app.post('/users/signUp', signUp)
 app.post('/users/followUser', followUser) //en cours
 app.post('/users/unFollow', unFollow) //en cours
 app.post('/users/getFollowingUsers', getfollowingUsers) //en cours
-app.get('/users/NotifLikeData', NotifLikeData)
+app.get('/likePostUser', likePostUser)
 app.get('/users/getUserDetails/:username', getUserDetails)
-
-
 
 app.post('/data/getUserPosts', getUserPosts)
 app.post('/data/getCommentOnPost', getCommentOnPost)
 app.post('/data/getAllPosts', getAllPosts)
 app.post('/data/commentOnPost/:postId', commentOnPost)
-app.post("/data/getAuthenticatedUser",getAuthenticatedUser)
+app.post('/data/getAuthenticatedUser', getAuthenticatedUser)
 
 app.get('/data/getUserPost/:postId', getUserPost)
 app.post('/data/postUserPost', postUserPost)
 app.post('/data/suppUserPost/:postId', suppUserPost)
+
+app.post('/uploadImage', uploadImage)
+app.post('/deleteImage', deleteImage)
 exports.app = functions.https.onRequest(app)

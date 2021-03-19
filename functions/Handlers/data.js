@@ -1,4 +1,5 @@
-const { db } = require('../Util/admin')
+const { admin, db } = require('../Util/admin')
+const { uuid } = require('uuidv4')
 
 exports.NotifLikeData = (req, res) => {
     let userData = {}
@@ -43,25 +44,26 @@ exports.NotifLikeData = (req, res) => {
         })
 }
 exports.getAuthenticatedUser = (req, res) => {
-    let userData = {};
+    let userData = {}
     console.log(req.body)
 
-    db.collection("Users").where("uid",'==',req.body.uid)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.size>0) {
-            snapshot.forEach((doc) => {
-                userData.credentials = doc.data(); 
-            })
-        }
-        console.log(userData)
-        return res.json(userData);
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(500).json({ error: err.code });
-      });
-  };
+    db.collection('Users')
+        .where('uid', '==', req.body.uid)
+        .get()
+        .then((snapshot) => {
+            if (snapshot.size > 0) {
+                snapshot.forEach((doc) => {
+                    userData.credentials = doc.data()
+                })
+            }
+            console.log(userData)
+            return res.json(userData)
+        })
+        .catch((err) => {
+            console.error(err)
+            return res.status(500).json({ error: err.code })
+        })
+}
 
 exports.getUserDetails = (req, res) => {
     let userData = {}
@@ -144,6 +146,7 @@ exports.postUserPost = (req, res) => {
         createdAt: new Date().toISOString(),
         likeCount: '0',
         commentCount: '0',
+        imageUrl: req.body.image != '' ? req.body.image : '',
     }
     db.collection('userPosts')
         .add(newPost)
@@ -190,47 +193,47 @@ exports.suppUserPost = (req, res) => {
         })
 }
 
- exports.getUserPosts = (req, res) => {
+exports.getUserPosts = (req, res) => {
     let UserId = req.body.username
-     let userPosts = []
-     db.collection('userPosts')
-         .where('username', '==', UserId)
+    let userPosts = []
+    db.collection('userPosts')
+        .where('username', '==', UserId)
         .get()
-         .then((snapshot) => {
+        .then((snapshot) => {
             if (snapshot.size > 0) {
                 snapshot.forEach((doc) => {
-                     userPosts.push(doc.data())
-                 })
-                 return res.status(200).send(userPosts)
-             } else {
-                 return res.status(200).json({ vide: 'pas de posts' })
-             }
-         })
- }
+                    userPosts.push(doc.data())
+                })
+                return res.status(200).send(userPosts)
+            } else {
+                return res.status(200).json({ vide: 'pas de posts' })
+            }
+        })
+}
 
 // recup les posts
 exports.getAllPosts = (req, res) => {
-    
     let UserId = req.body.username
     console.log(UserId)
     let AllPosts = []
-    
+
     db.collection('userPosts')
-         .where('username', '==', UserId)
+        .where('username', '==', UserId)
         .get()
-         .then((snapshot) => {
+        .then((snapshot) => {
             if (snapshot.size > 0) {
                 snapshot.forEach((doc) => {
                     let post
-                     post=doc.data();
-                     post.comments=[]
-                
-                     AllPosts.push(post)
-                     
-                 })
-            }}).catch((e) => {
-                console.log(e)
-            })
+                    post = doc.data()
+                    post.comments = []
+
+                    AllPosts.push(post)
+                })
+            }
+        })
+        .catch((e) => {
+            console.log(e)
+        })
     db.collection('follows')
         .where('follow', '==', UserId)
         .get()
@@ -243,38 +246,34 @@ exports.getAllPosts = (req, res) => {
                         .orderBy('createdAt', 'asc')
                         .get()
                         .then((snap) => {
-                            if(snap.size>0){
+                            if (snap.size > 0) {
                                 snap.forEach((snapshot) => {
-                                    let Post= snapshot.data();
-                                    Post.comments=[]
+                                    let Post = snapshot.data()
+                                    Post.comments = []
                                     AllPosts.push(Post)
-                                    })
-                                    
+                                })
+
                                 AllPosts.sort(function (a, b) {
                                     var dtA = new Date(a['createdAt']),
                                         dtB = new Date(b['createdAt'])
-                                    return  dtB.getTime()-dtA.getTime()
+                                    return dtB.getTime() - dtA.getTime()
                                 })
-                                
+
                                 return res.status(200).send(AllPosts)
-                                
                             }
-                            
-                           
                         })
                         .catch((e) => {
                             res.status(500)
                         })
                 })
-                
             } else {
-                return res.status(201).json({ follower: 'pas de followers' })
+                return res.status(201).send(AllPosts)
             }
         })
         .catch((e) => {
             res.send(e)
         })
-    }
+}
 
 //commentaire dun post
 exports.commentOnPost = (req, res) => {
@@ -307,20 +306,133 @@ exports.commentOnPost = (req, res) => {
         })
 }
 
-exports.getCommentOnPost = (req,res) => {
-    const postId=req.body.postId
+exports.getCommentOnPost = (req, res) => {
+    const postId = req.body.postId
     console.log(postId)
-    const comments=[]
-    db.collection("userPosts").doc(postId).collection('comments').get().then((snap) => {
-        if (snap.size>0){
-            snap.forEach((doc) => {
-                comments.push(doc.data())
-            })
-            res.status(200).send(comments)
-        }
-        else{
-            res.status(400).json({error:"no comments found"})
-        }
-    })
+    const comments = []
+    db.collection('userPosts')
+        .doc(postId)
+        .collection('comments')
+        .get()
+        .then((snap) => {
+            if (snap.size > 0) {
+                snap.forEach((doc) => {
+                    comments.push(doc.data())
+                })
+                res.status(200).send(comments)
+            } else {
+                res.status(400).json({ error: 'no comments found' })
+            }
+        })
+}
 
+exports.uploadImage = (req, res) => {
+    const BusBoy = require('busboy')
+    const path = require('path')
+    const os = require('os')
+    const fs = require('fs')
+
+    const busboy = new BusBoy({ headers: req.headers })
+
+    let imageToBeUploaded = {}
+    let imageFileName
+    // String for image token
+    console.log(uuid())
+    let generatedToken = uuid()
+
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+        //console.log(fieldname, file, filename, encoding, mimetype);
+        if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+            return res.status(400).json({ error: 'Wrong file type submitted' })
+        }
+        // my.image.png => ['my', 'image', 'png']
+        const imageExtension = filename.split('.')[filename.split('.').length - 1]
+        // 32756238461724837.png
+        imageFileName = `${Math.round(Math.random() * 1000000000000).toString()}.${imageExtension}`
+        const filepath = path.join(os.tmpdir(), imageFileName)
+        imageToBeUploaded = { filepath, mimetype }
+        file.pipe(fs.createWriteStream(filepath))
+    })
+    busboy.on('finish', () => {
+        admin
+            .storage()
+            .bucket()
+            .upload(imageToBeUploaded.filepath, {
+                resumable: false,
+                metadata: {
+                    metadata: {
+                        contentType: imageToBeUploaded.mimetype,
+                        //Generate token to be appended to imageUrl
+                        firebaseStorageDownloadTokens: generatedToken,
+                    },
+                },
+            })
+            .then(() => {
+                // Append token to url
+                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/bddsocialnetwork.appspot.com/o/${imageFileName}?alt=media&token=${generatedToken}`
+                return res.status(200).send(imageUrl)
+            })
+            .catch((err) => {
+                console.error(err)
+                return res.status(500).json({ error: 'something went wrong' })
+            })
+    })
+    busboy.end(req.rawBody)
+}
+
+exports.deleteImage = (req, res) => {
+    let imageUrl = req.body.imageUrl
+    let imageRef = admin.storage().bucket()
+    imageRef
+        .delete()
+        .file(imageUrl)
+        .then(() => {
+            return res.status(200).Json({ succes: 'ouiiiii' })
+        })
+        .catch((error) => {
+            return res.status(500)
+        })
+}
+
+exports.likePostUser = (req, res) => {
+    const newlike = db.collection('likesPostsUser').where('username', '==', req.body.username).where('postId', '==', req.params.postId).limit(1)
+
+    const post = db.doc(`/userPosts/${req.params.postId}`)
+
+    let postData
+
+    post.get()
+        .then((doc) => {
+            if (doc.exists) {
+                postData = doc.data()
+                postData.postId = doc.id
+                return newLike.get()
+            } else {
+                return res.status(404).json({ error: 'post not found' })
+            }
+        })
+        .then((data) => {
+            if (data.empty) {
+                return db
+                    .collection('likesPostsUser')
+                    .add({
+                        postId: req.params.postId,
+                        username: req.body.name,
+                        creatAt: new Date().toISOString(),
+                    })
+                    .then(() => {
+                        postData.likeCount++
+                        return post.update({ likeCount: postData.likeCount })
+                    })
+                    .then(() => {
+                        return res.json(postData)
+                    })
+            } else {
+                return res.status(400).json({ error: 'post already liked' })
+            }
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(500).json({ error: err.code })
+        })
 }

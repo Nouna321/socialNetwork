@@ -18,7 +18,7 @@ export default function AffichNotif() {
             <div>
                 <button type='button' onClick={handleClick} className=' '>
                     <a className=' '>
-                        <MdNotifications className='text-3xl text-gray-100' size={30} />
+                        <MdNotifications className='text-3xl text-gray-400' size={30} />
                     </a>
                 </button>
 

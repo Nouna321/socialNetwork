@@ -60,7 +60,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/studup-dc5db/us-central1/app",
+  "proxy": "http://localhost:5000/bddsocialnetwork/us-central1/app",
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.3",
     "autoprefixer": "^9.8.6",

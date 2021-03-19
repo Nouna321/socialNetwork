@@ -1,55 +1,57 @@
 import React, { useState } from 'react'
-import {useDispatch,useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { FaComments } from 'react-icons/fa'
 import { FcLike } from 'react-icons/fc'
-import { FaTrashAlt } from 'react-icons/fa'
+import { TiDeleteOutline } from 'react-icons/ti'
 import Comments from './comments'
 import moment from 'moment'
 import { getCommentOnPost } from '../Redux/Actions/postAction'
+import { database } from 'firebase-functions/lib/providers/firestore'
 moment().format()
 
 export default function Publication(props) {
     const [showComments, setShowComments] = useState(false)
     //const data=useSelector((state) => {state.data})
-    const dispatch=useDispatch()
-    const displayComments=() => {
-        setShowComments(true);
-        getCommentOnPost(dispatch,props.post.postId)
-
+    const dispatch = useDispatch()
+    const displayComments = () => {
+        setShowComments(true)
+        getCommentOnPost(dispatch, props.post.postId)
     }
+    console.log(props.post.imageUrl)
     return (
-        <div className='pt-12 '>
-            <div className='grid grid-rows bg-gray-200 shadow-lg rounded-lg  md:mx-auto  max-w-md md:max-w-2xl px-4 py-4'>
-                <div className='flex '>
-                    <small className=' text-sm text-gray-500 mx-auto'>{moment(props.post.createdAt).startOf('hour').fromNow()}</small>
-                    <FaTrashAlt className='flex justify-end' size={20} />
-                </div>
+        <div className='pt-8 '>
+            <div className='grid grid-rows-4 bg-white shadow-lg rounded-lg  md:mx-auto  max-w-md md:max-w-2xl px-4 py-4'>
                 <div className='flex flex-row'>
                     <img
                         className='w-12 h-12 rounded-full object-cover mr-4 shadow'
                         src='https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
                         alt='avatar'
                     />
-                    <div className='flex '>
+
+                    <div className='flex flex-col '>
                         <h2 className='text-lg font-semibold text-gray-900 -mt-1'>{props.post.username} </h2>
+                        <small className=' text-sm text-gray-500 mx-auto'>{moment(props.post.createdAt).startOf('hour').fromNow()}</small>
+                    </div>
+                    <div className='flex justify-end'>
+                        <TiDeleteOutline className='flex justify-end text-blue-400 ' size={25} />
                     </div>
                 </div>
+
                 <div>
-                    <p className=' pl-16   text-lg font-semibold'>{props.post.body}</p>{' '}
+                    <p className=' pl-16 mt-4  text-sm text-gray-800 font-semibold'>{props.post.body}</p>
                 </div>
+
+                {props.post.imageUrl != '' ? <img src={props.post.imageUrl} /> : null}
                 <div className=''>
                     <div className='mt-4 flex items-center'>
                         <div className='flex  text-red-900 text-sm mr-3'>
                             <FcLike size={25} />
-                            <span className='flex items-end pl-2'>0</span>
+                            <span className='flex items-end pl-2'>like 0</span>
                         </div>
                         <div className='flex  text-gray-700 text-sm mr-8'>
-                            <FaComments
-                                size={25}
-                                onClick={displayComments}
-                            />
+                            <FaComments size={25} onClick={displayComments} />
 
-                            <span className='flex items-end pl-2'>{props.post.commentCount}</span>
+                            <span className='flex items-end pl-2'>Commentaires {props.post.commentCount}</span>
                         </div>
                     </div>
                 </div>
