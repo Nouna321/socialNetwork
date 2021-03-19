@@ -1,6 +1,7 @@
 
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER } from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER ,LOGOUT_USER,SET_UNAUTHENTICATED} from '../types'
 import axios from 'axios'
+import { getPosts } from './postAction';
 const {fire } = require("../../init");
 
 
@@ -94,11 +95,27 @@ export const signUpUser = (userData, history, dispatch) => {
 export const loginUser = (userData, history, dispatch) => {
     fire.auth().signInWithEmailAndPassword(userData.email, userData.password)
         .then((data) => { 
-            const uid= data.user.uid;
-            localStorage.setItem("uid",uid)
-            //getUserData(dispatch,history,uid).then(
-                history.push("./filActualite")
-          //  )
+            
+            const uid= {uid:data.user.uid};
+            console.log(uid)
+            dispatch({ type: LOADING_USER })
+    axios
+      .post('/data/getAuthenticatedUser',uid)
+      .then((res) => {
+        console.log("yes")
+        const User=res.data
+        console.log(User)
+        dispatch({
+          type: SET_USER,
+          payload: User
+        });
+        let user={username:User.credentials.username}
+        getPosts(dispatch,user)
+      })
+      .catch((err) => console.log(err));
+      
+                  history.push("./filActualite")
+         
             
 
             })
@@ -108,6 +125,9 @@ export const loginUser = (userData, history, dispatch) => {
         })
         
 }
+
+
+
 
 // export const loginGoogle = (data) => (dispatch) => {
 //     axios
@@ -124,24 +144,25 @@ export const loginUser = (userData, history, dispatch) => {
 //         })
 // }
 
-export const  getUserData =  (dispatch,data) => {
+// export const  getUserData =  (dispatch,data) => {
+//     console.log(data)
 
-    const uid={id:data}
-    console.log(uid)
-    dispatch({ type: LOADING_USER })
-    axios
-      .post('/data/getAuthenticatedUser',uid)
-      .then((res) => {
+//     const uid={id:data}
+//     console.log(uid)
+//     dispatch({ type: LOADING_USER })
+//     axios
+//       .post('/data/getAuthenticatedUser',uid)
+//       .then((res) => {
         
-        dispatch({
-          type: SET_USER,
-          payload: res.data
-        });
-        localStorage.setItem("User",JSON.stringify(res.data))
-      })
-      .catch((err) => console.log(err));
-      return;
-  };
+//         dispatch({
+//           type: SET_USER,
+//           payload: res.data
+//         });
+//         localStorage.setItem("User",JSON.stringify(res.data))
+//       })
+//       .catch((err) => console.log(err));
+//       return;
+ // };
 
 export const forgotPassword = (userData, history, dispatch) => {
     dispatch({ type: FORGOT_PASSWORD })

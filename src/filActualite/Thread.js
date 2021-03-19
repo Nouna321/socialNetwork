@@ -7,22 +7,20 @@ import Publication from './publication'
 export default function Thread() {
     const dispatch = useDispatch()
     const data = useSelector((state) => state.data)
-    const uid= localStorage.uid;
-    const userInfo= localStorage.User;
-    const user=JSON.parse(userInfo)
+    const user=useSelector((state) => state.user)
+    
+        
+    
 
-    useEffect(() => {
-        getUserData(dispatch,uid)
-        getPosts(dispatch,user.credentials.username)
-        console.log(data)
-    }, [])
+   
 
     return (
         <div className=''>
             <ul>
-                {data.posts.map((post) => {
+                {data.posts.length>0 ?
+                data.posts.map((post) => {
                     return <Publication post={post} key={post.postId} />
-                })}
+                }):null}
             </ul>
         </div>
     )

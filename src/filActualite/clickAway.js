@@ -1,8 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import   {useDispatch} from 'react-redux'
+import {CLEAN_POSTS, LOGOUT_USER    } from '../Redux/types'
+import { Link,useHistory } from 'react-router-dom'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+const {fire } = require("../init");
+
+
+
+
+
+
 
 export default function ClickAway() {
+    const dispatch=useDispatch()
+    const history=useHistory()
     const [open, setOpen] = React.useState(false)
 
     const handleClick = () => {
@@ -12,7 +23,14 @@ export default function ClickAway() {
     const handleClickAway = () => {
         setOpen(false)
     }
-
+    const logOut =(e) => {
+        fire.auth().signOut().then(() => {
+            localStorage.clear()
+            dispatch({type:LOGOUT_USER})
+            dispatch({type:CLEAN_POSTS})
+            history.push('./')
+        })
+    }
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <div className='pt-4 pr-2'>
@@ -36,7 +54,7 @@ export default function ClickAway() {
                         <Link to={'parametre'} className='block px-4 py-2 text-base text-gray-500 hover:bg-gray-700' role='menuitem'>
                             Parametres
                         </Link>
-                        <a href='#' className='block px-4 py-2 text-base text-gray-500 hover:bg-gray-700' role='menuitem'>
+                        <a href='#' onClick={logOut} className='block px-4 py-2 text-base text-gray-500 hover:bg-gray-700' role='menuitem'>
                             Se déconnecter{' '}
                         </a>
                     </div>

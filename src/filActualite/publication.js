@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
+import {useDispatch,useSelector} from 'react-redux'
 import { FaComments } from 'react-icons/fa'
 import { FcLike } from 'react-icons/fc'
 import { FaTrashAlt } from 'react-icons/fa'
 import Comments from './comments'
 import moment from 'moment'
+import { getCommentOnPost } from '../Redux/Actions/postAction'
 moment().format()
 
 export default function Publication(props) {
     const [showComments, setShowComments] = useState(false)
-    console.log(showComments)
-    console.log(props.post.comments)
+    //const data=useSelector((state) => {state.data})
+    const dispatch=useDispatch()
+    const displayComments=() => {
+        setShowComments(true);
+        getCommentOnPost(dispatch,props.post.postId)
+
+    }
     return (
         <div className='pt-12 '>
             <div className='grid grid-rows bg-gray-200 shadow-lg rounded-lg  md:mx-auto  max-w-md md:max-w-2xl px-4 py-4'>
@@ -39,9 +46,7 @@ export default function Publication(props) {
                         <div className='flex  text-gray-700 text-sm mr-8'>
                             <FaComments
                                 size={25}
-                                onClick={() => {
-                                    setShowComments(!showComments)
-                                }}
+                                onClick={displayComments}
                             />
 
                             <span className='flex items-end pl-2'>{props.post.commentCount}</span>

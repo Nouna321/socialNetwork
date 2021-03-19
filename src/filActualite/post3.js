@@ -13,17 +13,18 @@ export default function Post3() {
     const [username, setUserName] = useState('')
     const [body, setBody] = useState('')
     const data = useSelector((state) => state.data)
+    const user = useSelector((state) => state.user)
     const dispatch = useDispatch()
-    const userInfo= localStorage.User;
-    const user=JSON.parse(userInfo)
+   // console.log(user)
+    
 
     function onCreatePost(e) {
         e.preventDefault()
+        
         const post = {
-            username:user.credentials.username,
             body,
         }
-        submitPost(post, dispatch)
+        submitPost(post,user ,dispatch)
     }
     return (
         <div className='flex flex-col  mt-4 '>

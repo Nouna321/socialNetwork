@@ -46,7 +46,7 @@ exports.getAuthenticatedUser = (req, res) => {
     let userData = {};
     console.log(req.body)
 
-    db.collection("Users").where("uid",'==',req.body.id)
+    db.collection("Users").where("uid",'==',req.body.uid)
       .get()
       .then((snapshot) => {
         if (snapshot.size>0) {
@@ -210,8 +210,9 @@ exports.suppUserPost = (req, res) => {
 
 // recup les posts
 exports.getAllPosts = (req, res) => {
-    console.log(req.body)
+    
     let UserId = req.body.username
+    console.log(UserId)
     let AllPosts = []
     
     db.collection('userPosts')
@@ -304,4 +305,22 @@ exports.commentOnPost = (req, res) => {
             console.log(err)
             res.status(500).json({ error: 'Something went wrong' })
         })
+}
+
+exports.getCommentOnPost = (req,res) => {
+    const postId=req.body.postId
+    console.log(postId)
+    const comments=[]
+    db.collection("userPosts").doc(postId).collection('comments').get().then((snap) => {
+        if (snap.size>0){
+            snap.forEach((doc) => {
+                comments.push(doc.data())
+            })
+            res.status(200).send(comments)
+        }
+        else{
+            res.status(400).json({error:"no comments found"})
+        }
+    })
+
 }

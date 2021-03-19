@@ -14,7 +14,7 @@ app.use(
 
 
 const { signUp, signIn, followUser, unFollow, getfollowingUsers, forgotPassword } = require('./Handlers/users')
-const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPosts,getUserPost, commentOnPost, getAuthenticatedUser, getAllPosts } = require('./Handlers/data')
+const { NotifLikeData, getUserDetails, postUserPost, suppUserPost, getUserPosts,getUserPost, commentOnPost, getAuthenticatedUser, getAllPosts,getCommentOnPost } = require('./Handlers/data')
 
 
 const { isAuth } = require('./Util/isAuth')
@@ -41,6 +41,7 @@ app.get('/users/getUserDetails/:username', getUserDetails)
 
 
 app.post('/data/getUserPosts', getUserPosts)
+app.post('/data/getCommentOnPost', getCommentOnPost)
 app.post('/data/getAllPosts', getAllPosts)
 app.post('/data/commentOnPost/:postId', commentOnPost)
 app.post("/data/getAuthenticatedUser",getAuthenticatedUser)

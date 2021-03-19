@@ -1,20 +1,23 @@
-import { GET_POST, SUBMIT_POST, DELETE_POST, SUBMIT_COMMENT } from '../types'
+import { GET_POST, SUBMIT_POST, DELETE_POST, SUBMIT_COMMENT,COMMENT_POST } from '../types'
 import axios from 'axios'
 
-export const getPosts = (dispatch, name) => {
-    const user={username:name}
-    console.log(user)
+export const getPosts = (dispatch, user) => {
+
     axios
         .post(`/data/getAllPosts`,user)
         .then((res) => {
             dispatch({ type: GET_POST, payload: res.data })
         })
         .catch((err) => console.log(err))
-}
+    }
+    
 
-export const submitPost = (post, dispatch) => {
+
+export const submitPost = (post,user ,dispatch) => {
+    const Post ={username:user.credentials.username,
+    body:post.body}
     axios
-        .post('/data/postUserPost', post)
+        .post('/data/postUserPost', Post)
         .then((res) => {
             dispatch({ type: SUBMIT_POST, payload: res.data })
         })
@@ -34,7 +37,7 @@ export const commentOnPost = (dispatch, comment) => {
     let postId = comment.postId
     let user = {
         body: comment.body,
-        username: 'Nouna',
+        username: comment.username,
         userImage: 'no',
     }
     axios
@@ -44,3 +47,12 @@ export const commentOnPost = (dispatch, comment) => {
         })
         .catch((err) => console.log(err))
 }
+ export const getCommentOnPost=(dispatch,post) => {
+     let id={postId:post}
+     axios.post("./data/getCommentOnPost",id).then(  (res) => {
+         let comments=res.data;
+         dispatch({type:COMMENT_POST,payload:{comments,post}})
+     }).catch((e) => {
+         console.log(e)
+     })
+ }

@@ -5,16 +5,17 @@ import { commentOnPost } from '../Redux/Actions/postAction'
 export default function Comments(props) {
     const [body, setBody] = useState('')
     const dispatch = useDispatch()
-    const data = useSelector((state) => state.data)
+    const user = useSelector((state) => state.user)
     const postId = props.postId
     const comments=props.comments
-    console.log(typeof(comments))
+   
 
     function onCreateComment(e) {
         e.preventDefault()
         const comment = {
-            postId,
+            username:user.credentials.username,
             body,
+            postId,
         }
         commentOnPost(dispatch, comment)
     }

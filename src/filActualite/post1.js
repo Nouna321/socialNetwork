@@ -13,14 +13,12 @@ import { Link } from 'react-router-dom'
 
 export default function Post1() {
     const User = useSelector((state) => state.user)
-    const uid = localStorage.uid;
-    const userInfo= localStorage.User;
-    const user=JSON.parse(userInfo)
-    
-
-
+    //console.log(User.credentials)
     return (
+        
         <div className='w-full h-12 bg-gray-800 flex flex-row shadow-xl   items-center  justify-center'>
+            {
+            User.loading!=null|true?
             <div className='  flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
                 <div className='flex-shrink-0 flex items-center'>
                     <h1>Logo</h1>
@@ -36,9 +34,7 @@ export default function Post1() {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className=' grid grid-cols-3 gap-8  text-gray-400  '>
+                <div className=' grid grid-cols-3 gap-8  text-gray-400  '>
                 <div>
                     
                     <Link to='/messagerie'>
@@ -54,12 +50,24 @@ export default function Post1() {
                 <div>
                     <AffichNotif />
                 </div>
+            
+                <ClickAway />
+                </div>
+            {User.loading==false ?<h3 className='text-gray-100'>{User.credentials.username}</h3> :null}
+                    
+            <div className='ml-28 mb-4'>
+            </div>
             </div>
             
-                    <h3 className='text-gray-100'>{user.credentials.username}</h3>
-            <div className='ml-28 mb-4'>
-                <ClickAway />
-            </div>
+            
+            
+            :null
+            
+        
+        }
+            
+            
+            
         </div>
     )
 }
