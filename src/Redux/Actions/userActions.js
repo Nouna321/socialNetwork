@@ -50,31 +50,10 @@ export const getFollowRequest=(dispatch,user)=>{
 
 export const  getOnlineUsers=(dispatch,user)=>{
     console.log(user)
-fire.firestore().collection("follows").where("follow",'==',user.username).get().then((snap) => {
-    if(snap.size>0){
-        let following =[]
-        snap.forEach((follow) => {
-            following.push(follow.data().followed)
-        })
-        fire.firestore().collection("Users").where("username",'in',following).where("isonline",'==',true).get().then((snapshot) => {
-            if(snapshot.size>0){
-                let onlineFriends=[]
-                snapshot.forEach((users) => {
-                    let friend={username:users.data().username,
-                        imageUrl:users.data().imageUrl
-
-                    }
-                    onlineFriends.push(friend)
-                    dispatch( {type:SET_ONLINE_USERS,payload:onlineFriends})
-                })
-            }else{
-                dispatch({type:NO_ONLINE_USERS})
-            }
-        }).catch((e) => {
-            console.log(e)
-        })
-}}
-).catch((e) => {
+axios.post('/users/getOnlineUsers',user).then((res) => {
+    dispatch({type:SET_ONLINE_USERS,payload:res.data})
+}).catch((e) => {
+    dispatch({type:NO_ONLINE_USERS})
     console.log(e)
 })}
 

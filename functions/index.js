@@ -12,7 +12,7 @@ app.use(
     })
 )
 
-const { signUp, signIn, FollowUser, unFollow, getfollowingUsers, forgotPassword,getSuggestedUsers, acceptFollowRequest,declineFollowRequest,getFollowRequest, getfollowers } = require('./Handlers/users')
+const { signUp, signIn, FollowUser, unFollow, getfollowingUsers, forgotPassword,getSuggestedUsers, acceptFollowRequest,declineFollowRequest,getFollowRequest, getfollowers, getOnlineUsers } = require('./Handlers/users')
 const {
     NotifLikeData,
     getUserDetails,
@@ -51,6 +51,7 @@ app.post('/users/acceptFollowRequest', acceptFollowRequest)
 app.post('/users/declineFollowRequest', declineFollowRequest) 
 app.post('/users/unFollow', unFollow) //en cours
 app.post('/users/getfollowers', getfollowers)
+app.post('/users/getOnlineUsers', getOnlineUsers)
 app.post('/users/getSuggestedUsers', getSuggestedUsers) 
 app.get('/likePostUser', likePostUser)
 app.get('/users/getUserDetails/:username', getUserDetails)

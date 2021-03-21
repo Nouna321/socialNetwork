@@ -61,7 +61,7 @@ export default function Post4() {
                             <p className='font-extrabold text-gray-300'>Amis en ligne</p>
                         </div>
                         <div className='flex flex-row pl-2 pt-4  '>
-                            {typeof(User.OnlineUsers)!="undefined"? User.OnlineUsers.map((user) => {
+                            {typeof(User.OnlineUsers)!="undefined" && User.OnlineUsers!=[]? User.OnlineUsers.map((user) => {
                                 return(<div>
                                     <div class='relative inline-block pl-2'>
                                 <img

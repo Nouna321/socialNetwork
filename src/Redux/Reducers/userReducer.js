@@ -15,6 +15,7 @@ export default function (state = initialState, action) {
                 loading:true,
             }
         case SET_ONLINE_USERS:
+            console.log(action.payload)
                 return {
                      ...state,
                     OnlineUsers:action.payload,

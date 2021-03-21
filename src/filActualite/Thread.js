@@ -13,10 +13,11 @@ export default function Thread() {
   
     useEffect(() => {
       let user={username:User.credentials.username}
-      console.log(user)
-      getOnlineUsers(dispatch,user)
+      console.log(user.username)
+     
       getPosts(dispatch,user)
       getSuggestedUsers(dispatch,user)
+      getOnlineUsers(dispatch,user)
       
       
       

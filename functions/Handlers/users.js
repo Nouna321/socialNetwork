@@ -196,52 +196,97 @@ exports.unFollow = (req, res) => {
 
  exports.getSuggestedUsers= (req,res) => {
      let username=req.body.username
+     
      db.collection("follows").where("follow",'==',username).get().then((snap) => {
+       
          if (snap.size>0){
              let followers=[username]
              snap.forEach((doc) => {
                  followers.push(doc.data().followed)
              })
-             db.collection("Users").where("username","not-in",followers).limit(15).get().then((snapshot) => {
+             db.collection("Users").where("username","not-in",followers).limit(10).get().then((snapshot) => {
                  if(snapshot.size>0){
-                     
                      let suggested=[]
                      snapshot.forEach((user) => {
                          suggested.push(user.data())
                      })
                      console.log(suggested)
                      db.collection("followRequest").where("Owner",'==',username).where("AccountName","not-in",suggested).get().then((snapshot) => {
-                       if(snapshot.size>0){
+                      console.log(snapshot.size)
+                      if(snapshot.size>0){
                          let nonSuggest=[username]
                          snapshot.forEach((doc) => {
                            nonSuggest.push(doc.data().AccountName)
                          })
+                         console.log('yessssss')
                          db.collection("Users").where("username",'not-in',nonSuggest).get().then((snapp) => {
+                           console.log(snapp.size)
                            if(snapp.size>0){
+                            console.log('momo')
                              let suggestedUsers=[]
                              snapp.forEach((doc) => {
                                suggestedUsers.push(doc.data())
                              })
                              return res.status(200).send(suggestedUsers)
+                             
+                             
+                           }else{
+                             console.log("youpipipi")
+                             return res.status(201).json({error:"pas de suggestion"})
                            }
 
+                         }).catch((e) => {
+                           console.log(e)
                          })
+                       }else{
+                         
+                         res.status(200).json({error:"pas de suggestion"})
                        }
                      }).catch((e) => {
                        res.status(500).send(e)
                      })
                      
+                 }else{
+                   res.status(200).json({error:"pas de suggestion"})
                  } 
              }).catch((e) => {
                console.log("here1")
                  res.status(500).send(e)
              })
-            }
+            }else{
+              console.log(username)
+              db.collection("followRequest").where("Owner",'==',username).get().then((snapshot) => {
+                console.log(snapshot.size)
+                if(snapshot.size>0){
+                  let nonSuggest=[username]
+                  snapshot.forEach((doc) => {
+                    nonSuggest.push(doc.data().AccountName)
+                  })
+                  db.collection("Users").where("username",'not-in',nonSuggest).limit(10).get().then((snapp) => {
+                    if(snapp.size>0){
+                      let suggestedUsers=[]
+                      snapp.forEach((doc) => {
+                        suggestedUsers.push(doc.data())
+                      })
+                      return res.status(200).send(suggestedUsers)}
      }).catch((e) => {
       console.log("here2")
          res.status(500).send(e)
      })
- }
+ }else{
+  db.collection("Users").where("username","!=",username).limit(10).get().then((snapp) => {
+    if(snapp.size>0){
+      let suggestedUsers=[]
+      snapp.forEach((doc) => {
+        suggestedUsers.push(doc.data())
+      })
+      return res.status(200).send(suggestedUsers)
+
+}
+})}
+
+})}})}
+
  exports.getFollowRequest= (req,res) => {
      const username=req.body.username
      db.collection('followRequest').where('AccountName',"==",username).get().then((snap) => {
@@ -262,6 +307,7 @@ exports.unFollow = (req, res) => {
          }
      })
  }
+ 
 
 exports.getfollowers = (req, res) => {
     let username = req.body.followed
@@ -290,3 +336,33 @@ exports.getfollowers = (req, res) => {
           res.status(500).send(e)
         })
       }
+exports.getOnlineUsers = (req,res)=>{
+  console.log(req.body.username)
+  const username=req.body.username
+  db.collection("follows").where("follow",'==',username).get().then((snap) => {
+    if(snap.size>0){
+        let following =[]
+        snap.forEach((follow) => {
+            following.push(follow.data().followed)
+        })
+        fire.firestore().collection("Users").where("username",'in',following).where("isonline",'==',true).get().then((snapshot) => {
+            if(snapshot.size>0){
+                let onlineFriends=[]
+                snapshot.forEach((users) => {
+                    let friend={username:users.data().username,
+                        imageUrl:users.data().imageUrl
+
+                    }
+                    onlineFriends.push(friend)
+                    console.log(onlineFriends)
+                    res.status(200).send(onlineFriends)
+                })
+            }else{
+                res.status(500).json({nousers:"no users found"})
+            }
+        }).catch((e) => {
+            console.log(e)
+        })
+      }
+})
+}
