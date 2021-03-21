@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPosts } from '../Redux/Actions/postAction'
-import { getUserData } from '../Redux/Actions/authUser'
+import { getSuggestedUsers } from '../Redux/Actions/dataAction'
 import Publication from './publication'
+import { getOnlineUsers } from '../Redux/Actions/userActions'
 
 export default function Thread() {
-    const dispatch = useDispatch()
     const data = useSelector((state) => state.data)
-    const user=useSelector((state) => state.user)
+    const User = useSelector(state => state.user);
+    const dispatch = useDispatch()
+  
+  
+    useEffect(() => {
+      let user={username:User.credentials.username}
+      console.log(user)
+      getOnlineUsers(dispatch,user)
+      getPosts(dispatch,user)
+      getSuggestedUsers(dispatch,user)
+      
+      
+      
+    }, []);
+    
     
         
     

@@ -95,6 +95,13 @@ export const signUpUser = (userData, history, dispatch) => {
 export const loginUser = (userData, history, dispatch) => {
     fire.auth().signInWithEmailAndPassword(userData.email, userData.password)
         .then((data) => { 
+            fire.firestore().collection("Users").where("uid",'==',data.user.uid).limit(1).get().then((doc) => {
+                doc.forEach((snap) => {
+                    snap.ref.update({isonline:true})
+                } )
+            }).catch((e) => {
+                console.log(e)
+            })
             
             const uid= {uid:data.user.uid};
             console.log(uid)

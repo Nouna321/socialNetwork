@@ -1,4 +1,4 @@
-import { UPLOADING_IMAGE, UPLOADING_IMAGE_SUCESS, DELETE_IMAGE } from '../types'
+import { UPLOADING_IMAGE, UPLOADING_IMAGE_SUCESS, DELETE_IMAGE,SUGGEST_USERS } from '../types'
 import axios from 'axios'
 
 export const UploadImagePost = (dispatch, image) => {
@@ -13,6 +13,7 @@ export const UploadImagePost = (dispatch, image) => {
 }
 
 export const DeleteImagePost = (dispatch) => {
+
     axios
         .post('/deleteImage')
         .then(() => {
@@ -20,3 +21,12 @@ export const DeleteImagePost = (dispatch) => {
         })
         .catch((err) => console.log(err))
 }
+
+export const getSuggestedUsers=(dispatch,user) => {
+   console.log("test")
+    axios.post("/users/getSuggestedUsers",user).then((res) => {
+        console.log(res.data)
+        dispatch({type:SUGGEST_USERS ,payload:res.data})
+    })
+}
+

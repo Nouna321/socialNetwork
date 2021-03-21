@@ -8,7 +8,7 @@ import { HiOutlineEmojiHappy } from 'react-icons/hi'
 import { FiLink } from 'react-icons/fi'
 import TextField from '@material-ui/core/TextField'
 import Thread from './Thread'
-import { UploadImagePost } from '../Redux/Actions/dataAction'
+import { UploadImagePost,getSuggestedUsers } from '../Redux/Actions/dataAction'
 import { Divider } from '@material-ui/core'
 
 export default function Post3() {
@@ -19,18 +19,20 @@ export default function Post3() {
     const [uploading, setUploading] = useState(false)
     const [image, setImage] = useState('')
 
-    console.log(image)
+
 
     const dispatch = useDispatch()
     // console.log(user)
 
-    function onCreatePost(e) {
-        e.preventDefault()
+    function onCreatePost() {
 
         const post = {
             body,
             image: data.image != '' ? data.image : '',
         }
+        
+
+
         submitPost(post, user, dispatch)
     }
 
@@ -66,18 +68,16 @@ export default function Post3() {
                 <div className='  flex flex-row mt-2'>
                     <button
                         onClick={onCreatePost}
-                        className=' bg-gradient-to-r from-pink-400 via-pink-600 to-pink-800 hover:bg-white text-white hover:text-gray-200 font-bold  px-4  inline-flex items-center rounded-full'
-                        type='submit'
-                        name='submit'>
+                        className=' bg-gradient-to-r from-pink-400 via-pink-600 to-pink-800 hover:bg-white text-white hover:text-gray-200 font-bold  px-4  inline-flex items-center rounded-full'>
                         <BsCardText className='text-white h-5 w-5 '></BsCardText>
                         <span>Text</span>
                     </button>
                     <div>
-                        <input onChange={onUpload} type='file' />
+                        {/* <input onChange={onUpload} type='file' />
                         <button className='ml-2 bg-gradient-to-r from-indigo-400 via-indigo-600 to-indigo-800  text-white font-bold px-4 rounded-full inline-flex items-center'>
                             <FaPhotoVideo className='text-white h-5 w-5 '></FaPhotoVideo>
                             <span>Photo</span>
-                        </button>
+                        </button> */}
                     </div>
 
                     <button className='ml-2 bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800  text-white font-bold  px-4 rounded-full inline-flex items-center'>

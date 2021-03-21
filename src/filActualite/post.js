@@ -4,12 +4,11 @@ import Post2 from './post2'
 import Post3 from './post3'
 import Post4 from './Post4'
 import { Link ,useHistory} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
-import {getUserData} from '../Redux/Actions/authUser'
+import {useDispatch,useSelector} from 'react-redux'
+import {getSuggestedUsers} from '../Redux/Actions/dataAction'
 
 
-export default function Post() {
-    
+export default function Post() {   
 ;    //console.log(User.credentials.credentials.username)
    
     return (

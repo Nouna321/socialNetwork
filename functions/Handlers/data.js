@@ -144,8 +144,8 @@ exports.postUserPost = (req, res) => {
         username: req.body.username,
         body: req.body.body,
         createdAt: new Date().toISOString(),
-        likeCount: '0',
-        commentCount: '0',
+        likeCount: 0,
+        commentCount: 0,
         imageUrl: req.body.image != '' ? req.body.image : '',
     }
     db.collection('userPosts')
@@ -156,7 +156,8 @@ exports.postUserPost = (req, res) => {
                 .doc(doc.id)
                 .set(newPost)
                 .then(() => {
-                    res.status(200).send(newPost)
+                    const newP={...newPost,comments:[],likes:[]}
+                    res.status(200).send(newP)
                 })
                 .catch((e) => {
                     res.status(500).json({ error: 'error' })
@@ -178,8 +179,7 @@ exports.suppUserPost = (req, res) => {
                 doc.ref
                     .delete()
                     .then(() => {
-                        console.log('supprimé')
-                        res.status(200)
+                        res.status(200).json({yes:"post supprimé"})
                     })
                     .catch((e) => {
                         res.status(500)
@@ -222,6 +222,7 @@ exports.getAllPosts = (req, res) => {
         .get()
         .then((snapshot) => {
             if (snapshot.size > 0) {
+                
                 snapshot.forEach((doc) => {
                     let post
                     post = doc.data()
@@ -239,6 +240,7 @@ exports.getAllPosts = (req, res) => {
         .get()
         .then((snapshot) => {
             if (snapshot.size > 0) {
+                
                 snapshot.forEach((doc) => {
                     const followed = doc.data().followed
                     db.collection('userPosts')
@@ -247,6 +249,7 @@ exports.getAllPosts = (req, res) => {
                         .get()
                         .then((snap) => {
                             if (snap.size > 0) {
+                                
                                 snap.forEach((snapshot) => {
                                     let Post = snapshot.data()
                                     Post.comments = []
@@ -259,6 +262,8 @@ exports.getAllPosts = (req, res) => {
                                     return dtB.getTime() - dtA.getTime()
                                 })
 
+                                return res.status(200).send(AllPosts)
+                            }else{
                                 return res.status(200).send(AllPosts)
                             }
                         })
@@ -395,37 +400,40 @@ exports.deleteImage = (req, res) => {
 }
 
 exports.likePostUser = (req, res) => {
-    const newlike = db.collection('likesPostsUser').where('username', '==', req.body.username).where('postId', '==', req.params.postId).limit(1)
+    const newlike = db.collection('userPosts').doc(req.params.postId).collection("likes").where('username', '==', req.body.username).limit(1)
 
     const post = db.doc(`/userPosts/${req.params.postId}`)
 
     let postData
+    console.log("working")
 
     post.get()
         .then((doc) => {
             if (doc.exists) {
                 postData = doc.data()
                 postData.postId = doc.id
-                return newLike.get()
+                return newlike.get()
             } else {
                 return res.status(404).json({ error: 'post not found' })
             }
         })
         .then((data) => {
             if (data.empty) {
+                let newLike={
+                    postId: req.params.postId,
+                    username: req.body.username,
+                    creatAt: new Date().toISOString(),
+                }
                 return db
-                    .collection('likesPostsUser')
-                    .add({
-                        postId: req.params.postId,
-                        username: req.body.name,
-                        creatAt: new Date().toISOString(),
-                    })
-                    .then(() => {
+                    .collection("userPosts").doc(req.params.postId).collection("likes")
+                    .add(newLike)
+                    .then((doc) => {
+                        newLike.likeId=doc.id
                         postData.likeCount++
                         return post.update({ likeCount: postData.likeCount })
                     })
                     .then(() => {
-                        return res.json(postData)
+                        return res.json(newLike)
                     })
             } else {
                 return res.status(400).json({ error: 'post already liked' })

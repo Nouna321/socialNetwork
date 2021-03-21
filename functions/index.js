@@ -12,7 +12,7 @@ app.use(
     })
 )
 
-const { signUp, signIn, followUser, unFollow, getfollowingUsers, forgotPassword } = require('./Handlers/users')
+const { signUp, signIn, FollowUser, unFollow, getfollowingUsers, forgotPassword,getSuggestedUsers, acceptFollowRequest,declineFollowRequest,getFollowRequest, getfollowers } = require('./Handlers/users')
 const {
     NotifLikeData,
     getUserDetails,
@@ -29,11 +29,12 @@ const {
     likePostUser,
 } = require('./Handlers/data')
 
-const { isAuth } = require('./Util/isAuth')
 
-//BodyParser
 
-app.use(bodyParser.json())
+
+
+
+
 var port = process.env.PORT || 5000
 
 // API endpoints
@@ -44,22 +45,29 @@ app.post('/users/signUp', signUp)
 //app.post('/users/forgotPassword', forgotPassword)
 
 // app.post('/users/signGoogle', signGoogle)
-app.post('/users/followUser', followUser) //en cours
+app.post('/users/FollowUser',FollowUser)
+app.post('/users/getFollowRequests',getFollowRequest)
+app.post('/users/acceptFollowRequest', acceptFollowRequest) 
+app.post('/users/declineFollowRequest', declineFollowRequest) 
 app.post('/users/unFollow', unFollow) //en cours
-app.post('/users/getFollowingUsers', getfollowingUsers) //en cours
+app.post('/users/getfollowers', getfollowers)
+app.post('/users/getSuggestedUsers', getSuggestedUsers) 
 app.get('/likePostUser', likePostUser)
 app.get('/users/getUserDetails/:username', getUserDetails)
+
 
 app.post('/data/getUserPosts', getUserPosts)
 app.post('/data/getCommentOnPost', getCommentOnPost)
 app.post('/data/getAllPosts', getAllPosts)
 app.post('/data/commentOnPost/:postId', commentOnPost)
+app.post('/data/likePostUser/:postId',likePostUser )
 app.post('/data/getAuthenticatedUser', getAuthenticatedUser)
 
 app.get('/data/getUserPost/:postId', getUserPost)
 app.post('/data/postUserPost', postUserPost)
-app.post('/data/suppUserPost/:postId', suppUserPost)
+app.post('/data/suppUserPost', suppUserPost)
 
 app.post('/uploadImage', uploadImage)
 app.post('/deleteImage', deleteImage)
+
 exports.app = functions.https.onRequest(app)

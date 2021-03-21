@@ -5,7 +5,7 @@ import { FirebaseAuthProvider } from '@react-firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
 
 import firebase from 'firebase'
-import { isLoggedInUser } from './Redux/Actions/authUser'
+import { getSuggestedUsers } from './Redux/Actions/dataAction'
 import './App.css'
 import dashboard from './dashboard/dash'
 import Signin from './dashboard/SignIn'

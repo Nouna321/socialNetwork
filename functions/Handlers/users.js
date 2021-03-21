@@ -77,23 +77,103 @@ exports.signUp = (req, res) => {
 
 
 
-exports.followUser = (req, res) => {
-    let newFollow = {
-        following: req.body.follower,
-        followed: req.body.following,
-        status: 'pending',
-        date: new Date().toISOString(),
-    }
-    db.collection('follows')
-        .add(newFollow)
-        .then(() => {
-            return res.status(200).json({ success: ' following request sent' })
-        })
-        .catch((e) => {
-            console.error(e)
-            return res.status(500).json({ error: 'something went wrong' })
-        })
-}
+exports.FollowUser = (req, res) => {
+    console.log("yesss")
+    let FollowRequest = {
+      Owner: req.body.owner,
+      AccountName: req.body.destination,
+      date: new Date().toISOString(),
+    };
+      db.collection("followRequest")
+      .where("Owner", "==", FollowRequest.Owner)
+      .where("AccountName", "in", [FollowRequest.AccountName,FollowRequest.AccountName])
+      .get()
+      .then((doc) => {
+        if (doc.size > 0) {
+          res.status(500).json({ error: "request already sent" });
+        } else {
+          db.collection("followRequest")
+            .add(FollowRequest)
+            .then((doc) => {
+              console.log(doc.id);
+              return res.status(200).json({ success: " following request sent" });
+            })
+            .catch((e) => {
+              console.error(e);
+              return res.status(500).json({ error: "something went wrong" });
+            });
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+        return res.status(500).json({ error: "something went wrong" });
+      });
+  
+  };
+  
+  exports.acceptFollowRequest = (req, res) => {
+    const request = {
+      requestId: req.body.requestId,
+      Owner: req.body.Owner,
+      AccountName: req.body.destination,
+    };
+    console.log(request)
+    db.collection("followRequest")
+      .doc(request.requestId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          db.collection("followRequest")
+            .doc(request.requestId)
+            .delete()
+            .then(() => {
+              console.log("yessyess");
+              db.collection("follows").add({
+                follow: request.Owner,
+                followed: request.AccountName,
+                dateFollow: new Date().toISOString(),
+              });
+              console.log('yesss')
+              res.status(200).json({ accepted: "invitation accepted " });
+            })
+            .catch((e) => {
+              res.status(500).json({ error: "something wrong" });
+            });
+        } else {
+          res.status(501).json({ error: "request doesnt exist" });
+        }
+      })
+      .catch((e) => {
+        res.status(500).json({ error: "something wrong 1" });
+      });
+  };
+
+  exports.declineFollowRequest = (req, res) => {
+    const request = {
+      requestId: req.body.requestId,
+      
+    };
+    db.collection("followRequest")
+      .doc(request.requestId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          doc.ref.delete()
+            .then(() => {
+              res.status(200).json({ accepted: "invitation declined " });
+            })
+            .catch((e) => {
+              res.status(500).json({ error: "something wrong" });
+            });
+        } else {
+          res.status(501).json({ error: "request doesnt exist" });
+        }
+      })
+      .catch((e) => {
+        res.status(500).json({ error: "something wrong 1" });
+      });
+  };
+
 
 exports.unFollow = (req, res) => {
     let follower = req.body.follower
@@ -114,31 +194,99 @@ exports.unFollow = (req, res) => {
         })
 }
 
-exports.getfollowingUsers = (req, res) => {
-    let following = []
-    let username = req.body.follower
-    db.collection('follows')
-        .where('following', '==', username)
-        .onSnapshot((data) => {
-            /*data.forEach((doc) => {
-        let following = [];
-        db.collection("Users")
-          .where("username", "==", doc.data().followed)
-          .onSnapshot((QuerySnapshot) => {
-            let changes = QuerySnapshot.docChanges();
-            for (change in changes) {
-              following.push(1);
-              console.log(following);
+ exports.getSuggestedUsers= (req,res) => {
+     let username=req.body.username
+     db.collection("follows").where("follow",'==',username).get().then((snap) => {
+         if (snap.size>0){
+             let followers=[username]
+             snap.forEach((doc) => {
+                 followers.push(doc.data().followed)
+             })
+             db.collection("Users").where("username","not-in",followers).limit(15).get().then((snapshot) => {
+                 if(snapshot.size>0){
+                     
+                     let suggested=[]
+                     snapshot.forEach((user) => {
+                         suggested.push(user.data())
+                     })
+                     console.log(suggested)
+                     db.collection("followRequest").where("Owner",'==',username).where("AccountName","not-in",suggested).get().then((snapshot) => {
+                       if(snapshot.size>0){
+                         let nonSuggest=[username]
+                         snapshot.forEach((doc) => {
+                           nonSuggest.push(doc.data().AccountName)
+                         })
+                         db.collection("Users").where("username",'not-in',nonSuggest).get().then((snapp) => {
+                           if(snapp.size>0){
+                             let suggestedUsers=[]
+                             snapp.forEach((doc) => {
+                               suggestedUsers.push(doc.data())
+                             })
+                             return res.status(200).send(suggestedUsers)
+                           }
+
+                         })
+                       }
+                     }).catch((e) => {
+                       res.status(500).send(e)
+                     })
+                     
+                 } 
+             }).catch((e) => {
+               console.log("here1")
+                 res.status(500).send(e)
+             })
             }
-          });*/
-            res.send(data)
-            /*(snapshot) => {
-            snapshot.forEach((users) => {
-              let followedUser = {
-                username: users.data().username,
-                isonline: users.data().isonline,
-              };
-              following.push(followedUser);
-            });*/
+     }).catch((e) => {
+      console.log("here2")
+         res.status(500).send(e)
+     })
+ }
+ exports.getFollowRequest= (req,res) => {
+     const username=req.body.username
+     db.collection('followRequest').where('AccountName',"==",username).get().then((snap) => {
+         if (snap.size>0){
+             let requests=[]
+             snap.forEach((request) => {
+               const reqId=request.id
+               const req={
+                 ...request.data(),
+                 requestId:reqId
+                 
+               }
+                 requests.push(req)
+             })
+             res.status(200).send(requests)
+         }else{
+             res.status(500).json({general:"no requests found"})
+         }
+     })
+ }
+
+exports.getfollowers = (req, res) => {
+    let username = req.body.followed
+    db.collection('follows')
+        .where('followed', '==', username)
+        .get().then((data) => {
+          if(data.size>0){
+            let followers = [];
+            data.forEach((doc) => {
+              followers.push(doc.data().follow)})
+              db.collection("Users")
+                .where("username", "in",followers )
+                .get().then((snapshot) => {
+                  let followersData= []
+                  snapshot.forEach((user) => {
+                    followersData.push(user.data())
+                  })
+                  return res.status(200).send(followersData)
+                }).catch((e) => {
+                  res.status(500).send(e)
+                }) 
+          }else{
+            res.status(201).json({error:'pas de followers'})
+          }
+        }).catch((e) => {
+          res.status(500).send(e)
         })
-}
+      }

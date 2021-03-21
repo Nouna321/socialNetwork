@@ -4,18 +4,28 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import userReducer from '../Reducers/userReducer'
 import postsReducer from '../Reducers/postsReducer'
+import dataReducer from '../Reducers/dataReducer'
+import { createFilter, createBlacklistFilter } from 'redux-persist-transform-filter';
+
 
 const middleware = [thunk]
+
+const saveSubsetBlacklistFilter = createBlacklistFilter(
+    'user',
+    ['OnlineUsers']
+  );
 
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['image'],
 }
 
 const reducers = combineReducers({
     user: userReducer,
+    infos:dataReducer,
     data: postsReducer,
+    
+    
 })
 const persistedReducer = persistReducer(persistConfig, reducers)
 
@@ -25,7 +35,11 @@ const enhancer = composeEnhancers(applyMiddleware(...middleware))
 
 export default () => {
     let store = createStore(persistedReducer, enhancer)
-    let persistor = persistStore(store)
+    let persistor = persistStore(store,{
+        transforms: [
+          saveSubsetBlacklistFilter  
+        ]
+      })
 
     return { store, persistor }
 }

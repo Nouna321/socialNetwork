@@ -1,9 +1,10 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,LOADING_USER,LOGOUT_USER } from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,LOADING_USER,LOGOUT_USER, SET_ONLINE_USERS,NO_ONLINE_USERS } from '../types'
 
 const initialState = {
     authenticated: false,
     loading: null,
     credentials: {},
+    OnlineUsers:[],
 }
 export default function (state = initialState, action) {
 
@@ -12,6 +13,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading:true,
+            }
+        case SET_ONLINE_USERS:
+                return {
+                     ...state,
+                    OnlineUsers:action.payload,
+                }
+        case NO_ONLINE_USERS:
+            return {
+                ...state,
+            
             }
             case LOGOUT_USER:
             return {
