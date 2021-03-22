@@ -1,42 +1,38 @@
-
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER ,LOGOUT_USER,SET_UNAUTHENTICATED} from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, FORGOT_PASSWORD, LOADING_USER, LOGOUT_USER, SET_UNAUTHENTICATED } from '../types'
 import axios from 'axios'
-import { getPosts } from './postAction';
-const {fire } = require("../../init");
-
-
+import { getPosts } from './postAction'
+import { getOnlineUsers } from './userActions'
+import { getSuggestedUsers } from './dataAction'
+const { fire } = require('../../init')
 
 export const LoginWithGoogle = () => {
     var provider = new fire.auth.GoogleAuthProvider()
     provider.addScope('email')
     provider.addScope('profile')
-    fire
-                .firestore()
-                .collection('Users')
-                .where("Email", "==", "sevenzhunter@gmail.com")
-                .get()
-                .then((snapshot) => {
-                    console.log(snapshot.size)
-                    console.log(snapshot)}
-                    )
-                    .catch((e) => {
-                        console.log(e)
-                    })
-    fire
-        .auth()
+    fire.firestore()
+        .collection('Users')
+        .where('Email', '==', 'sevenzhunter@gmail.com')
+        .get()
+        .then((snapshot) => {
+            console.log(snapshot.size)
+            console.log(snapshot)
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+    fire.auth()
         .signInWithPopup(provider)
         .then((result) => {
             console.log('hello')
             var user = result.user
             var accessToken = result.credential.accessToken
             const name = user.displayName.split(' ')
-            
+
             const username = name[0].concat(name[1])
-           
-            fire
-                .firestore()
+
+            fire.firestore()
                 .collection('Users')
-                .where("Email", "==", "sevenzhunter@gmail.com")
+                .where('Email', '==', 'sevenzhunter@gmail.com')
                 .get()
                 .then((snapshot) => {
                     console.log(snapshot.size)
@@ -58,8 +54,6 @@ export const LoginWithGoogle = () => {
                             fire.firestore().collection('Users').doc(id).update(newuser)
                         })
                     } else {
-                       
-                        
                         fire.firestore().collection('Users').doc(username).set(newuser)
                     }
                 })
@@ -93,48 +87,50 @@ export const signUpUser = (userData, history, dispatch) => {
 }
 
 export const loginUser = (userData, history, dispatch) => {
-    fire.auth().signInWithEmailAndPassword(userData.email, userData.password)
-        .then((data) => { 
-            fire.firestore().collection("Users").where("uid",'==',data.user.uid).limit(1).get().then((doc) => {
-                doc.forEach((snap) => {
-                    snap.ref.update({isonline:true})
-                } )
-            }).catch((e) => {
-                console.log(e)
-            })
-            
-            const uid= {uid:data.user.uid};
+    fire.auth()
+        .signInWithEmailAndPassword(userData.email, userData.password)
+        .then((data) => {
+            fire.firestore()
+                .collection('Users')
+                .where('uid', '==', data.user.uid)
+                .limit(1)
+                .get()
+                .then((doc) => {
+                    doc.forEach((snap) => {
+                        snap.ref.update({ isonline: true })
+                    })
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+
+            const uid = { uid: data.user.uid }
             console.log(uid)
             dispatch({ type: LOADING_USER })
-    axios
-      .post('/data/getAuthenticatedUser',uid)
-      .then((res) => {
-        console.log("yes")
-        const User=res.data
-        console.log(User)
-        dispatch({
-          type: SET_USER,
-          payload: User
-        });
-        let user={username:User.credentials.username}
-        getPosts(dispatch,user)
-      })
-      .catch((err) => console.log(err));
-      
-                  history.push("./filActualite")
-         
-            
+            axios
+                .post('/data/getAuthenticatedUser', uid)
+                .then((res) => {
+                    console.log('yes')
+                    const User = res.data
+                    console.log(User)
+                    dispatch({
+                        type: SET_USER,
+                        payload: User,
+                    })
+                    let user = { username: User.credentials.username }
+                    getPosts(dispatch, user)
+                    getOnlineUsers(dispatch, user)
+                    getSuggestedUsers(dispatch, user)
+                })
+                .catch((err) => console.log(err))
 
-            })
+            history.push('./filActualite')
+        })
         .catch((e) => {
             console.error(e)
             dispatch({ type: SET_ERRORS, payload: e.data })
         })
-        
 }
-
-
-
 
 // export const loginGoogle = (data) => (dispatch) => {
 //     axios
@@ -146,7 +142,7 @@ export const loginUser = (userData, history, dispatch) => {
 //         .catch((err) => {
 //             dispatch({
 //                 type: SET_ERRORS,
-//                 payload: err.response.data, 
+//                 payload: err.response.data,
 //             })
 //         })
 // }
@@ -160,7 +156,7 @@ export const loginUser = (userData, history, dispatch) => {
 //     axios
 //       .post('/data/getAuthenticatedUser',uid)
 //       .then((res) => {
-        
+
 //         dispatch({
 //           type: SET_USER,
 //           payload: res.data
@@ -169,7 +165,7 @@ export const loginUser = (userData, history, dispatch) => {
 //       })
 //       .catch((err) => console.log(err));
 //       return;
- // };
+// };
 
 export const forgotPassword = (userData, history, dispatch) => {
     dispatch({ type: FORGOT_PASSWORD })
@@ -187,5 +183,3 @@ export const forgotPassword = (userData, history, dispatch) => {
             })
         })
 }
-
-

@@ -5,6 +5,7 @@ export const SET_USER = 'SET_USER'
 export const LOADING_USER = 'LOADING_USER'
 export const NO_ONLINE_USERS = 'NO_ONLINE_USERS '
 export const SET_ONLINE_USERS = 'SET_ONLINE_USERS'
+
 // UI reducer types
 export const SET_ERRORS = 'SET_ERRORS'
 export const LOADING_UI = 'LOADING_UI'
@@ -25,6 +26,9 @@ export const COMMENT_POST = 'COMMENT_POST'
 export const SUBMIT_POST = 'SUBMIT_POST'
 export const SUBMIT_COMMENT = 'SUBMIT_COMMENT'
 export const GET_POST = 'GET_POST'
+
+export const SET_SELECTED_USER = 'SET_SELECTED_USER'
+export const SET_FOLLOWERS = 'SET_FOLLOWERS'
 
 export const UPLOADING_IMAGE = 'UPLOADING_IMAGE'
 export const UPLOADING_IMAGE_SUCESS = 'UPLOADING_IMAGE_SUCESS'

@@ -17,6 +17,8 @@ import profilUser from './profilUser/profilUser'
 import ForgotPass from './dashboard/ForgotPass'
 import Card from './filActualite/Card'
 import Invitation from './filActualite/invitation'
+import EditProfil from './profilUser/components/Editprofil'
+import friends from './profilUser/components/friend'
 
 const config = require('./config')
 
@@ -38,6 +40,8 @@ const App = () => {
                         <Route path='/forgotPass' component={ForgotPass} />
                         <Route path='/card' component={Card} />
                         <Route path='/Invitation' component={Invitation} />
+                        <Route path='/EditProfil' component={EditProfil} />
+                        <Route path='/friends' component={friends} />
                     </Switch>
                 </Router>
             }

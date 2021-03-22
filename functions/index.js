@@ -12,7 +12,20 @@ app.use(
     })
 )
 
-const { signUp, signIn, FollowUser, unFollow, getfollowingUsers, forgotPassword,getSuggestedUsers, acceptFollowRequest,declineFollowRequest,getFollowRequest, getfollowers, getOnlineUsers } = require('./Handlers/users')
+const {
+    signUp,
+    signIn,
+    FollowUser,
+    unFollow,
+    getfollowingUsers,
+    forgotPassword,
+    getSuggestedUsers,
+    acceptFollowRequest,
+    declineFollowRequest,
+    getFollowRequest,
+    getfollowers,
+    getOnlineUsers,
+} = require('./Handlers/users')
 const {
     NotifLikeData,
     getUserDetails,
@@ -29,12 +42,6 @@ const {
     likePostUser,
 } = require('./Handlers/data')
 
-
-
-
-
-
-
 var port = process.env.PORT || 5000
 
 // API endpoints
@@ -45,23 +52,22 @@ app.post('/users/signUp', signUp)
 //app.post('/users/forgotPassword', forgotPassword)
 
 // app.post('/users/signGoogle', signGoogle)
-app.post('/users/FollowUser',FollowUser)
-app.post('/users/getFollowRequests',getFollowRequest)
-app.post('/users/acceptFollowRequest', acceptFollowRequest) 
-app.post('/users/declineFollowRequest', declineFollowRequest) 
+app.post('/users/FollowUser', FollowUser)
+app.post('/users/getFollowRequests', getFollowRequest)
+app.post('/users/acceptFollowRequest', acceptFollowRequest)
+app.post('/users/declineFollowRequest', declineFollowRequest)
 app.post('/users/unFollow', unFollow) //en cours
 app.post('/users/getfollowers', getfollowers)
 app.post('/users/getOnlineUsers', getOnlineUsers)
-app.post('/users/getSuggestedUsers', getSuggestedUsers) 
+app.post('/users/getSuggestedUsers', getSuggestedUsers)
 app.get('/likePostUser', likePostUser)
 app.get('/users/getUserDetails/:username', getUserDetails)
-
 
 app.post('/data/getUserPosts', getUserPosts)
 app.post('/data/getCommentOnPost', getCommentOnPost)
 app.post('/data/getAllPosts', getAllPosts)
 app.post('/data/commentOnPost/:postId', commentOnPost)
-app.post('/data/likePostUser/:postId',likePostUser )
+app.post('/data/likePostUser/:postId', likePostUser)
 app.post('/data/getAuthenticatedUser', getAuthenticatedUser)
 
 app.get('/data/getUserPost/:postId', getUserPost)

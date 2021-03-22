@@ -76,14 +76,14 @@ exports.getUserDetails = (req, res) => {
             if (doc.exists) {
                 userData.user = {
                     uid: doc.data().uid,
-                    email: doc.data().email,
+                    email: doc.data().Email,
                     firstname: doc.data().FirstName,
                     lastname: doc.data().LastName,
                     username: doc.data().username,
                     creatdAt: doc.data().creatAt,
                 }
                 return db
-                    .collection('posts')
+                    .collection('userPosts')
                     .where('username', '==', req.params.username)
                     .orderBy('createdAt')
                     .get()
@@ -156,7 +156,7 @@ exports.postUserPost = (req, res) => {
                 .doc(doc.id)
                 .set(newPost)
                 .then(() => {
-                    const newP={...newPost,comments:[],likes:[]}
+                    const newP = { ...newPost, comments: [], likes: [] }
                     res.status(200).send(newP)
                 })
                 .catch((e) => {
@@ -179,7 +179,7 @@ exports.suppUserPost = (req, res) => {
                 doc.ref
                     .delete()
                     .then(() => {
-                        res.status(200).json({yes:"post supprimé"})
+                        res.status(200).json({ yes: 'post supprimé' })
                     })
                     .catch((e) => {
                         res.status(500)
@@ -222,7 +222,6 @@ exports.getAllPosts = (req, res) => {
         .get()
         .then((snapshot) => {
             if (snapshot.size > 0) {
-                
                 snapshot.forEach((doc) => {
                     let post
                     post = doc.data()
@@ -240,7 +239,6 @@ exports.getAllPosts = (req, res) => {
         .get()
         .then((snapshot) => {
             if (snapshot.size > 0) {
-                
                 snapshot.forEach((doc) => {
                     const followed = doc.data().followed
                     db.collection('userPosts')
@@ -249,7 +247,6 @@ exports.getAllPosts = (req, res) => {
                         .get()
                         .then((snap) => {
                             if (snap.size > 0) {
-                                
                                 snap.forEach((snapshot) => {
                                     let Post = snapshot.data()
                                     Post.comments = []
@@ -263,7 +260,7 @@ exports.getAllPosts = (req, res) => {
                                 })
 
                                 return res.status(200).send(AllPosts)
-                            }else{
+                            } else {
                                 return res.status(200).send(AllPosts)
                             }
                         })
@@ -400,12 +397,12 @@ exports.deleteImage = (req, res) => {
 }
 
 exports.likePostUser = (req, res) => {
-    const newlike = db.collection('userPosts').doc(req.params.postId).collection("likes").where('username', '==', req.body.username).limit(1)
+    const newlike = db.collection('userPosts').doc(req.params.postId).collection('likes').where('username', '==', req.body.username).limit(1)
 
     const post = db.doc(`/userPosts/${req.params.postId}`)
 
     let postData
-    console.log("working")
+    console.log('working')
 
     post.get()
         .then((doc) => {
@@ -419,16 +416,18 @@ exports.likePostUser = (req, res) => {
         })
         .then((data) => {
             if (data.empty) {
-                let newLike={
+                let newLike = {
                     postId: req.params.postId,
                     username: req.body.username,
                     creatAt: new Date().toISOString(),
                 }
                 return db
-                    .collection("userPosts").doc(req.params.postId).collection("likes")
+                    .collection('userPosts')
+                    .doc(req.params.postId)
+                    .collection('likes')
                     .add(newLike)
                     .then((doc) => {
-                        newLike.likeId=doc.id
+                        newLike.likeId = doc.id
                         postData.likeCount++
                         return post.update({ likeCount: postData.likeCount })
                     })
