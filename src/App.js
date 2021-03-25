@@ -19,6 +19,7 @@ import Card from './filActualite/Card'
 import Invitation from './filActualite/invitation'
 import EditProfil from './profilUser/components/Editprofil'
 import friends from './profilUser/components/friend'
+import AuthRoute from "./util/AuthRoute"
 
 const config = require('./config')
 
@@ -33,15 +34,15 @@ const App = () => {
                         <Route path='/' exact component={dashboard} />
                         <Route path='/signin' component={Signin} />
                         <Route path='/signup' component={Signup} />
-                        <Route path='/filActualite' component={filActualite} />
-                        <Route path='/iterfaceUser' component={iterfaceUser} />
-                        <Route path='/messagerie' component={messagerie} />
-                        <Route path='/profilUser' component={profilUser} />
-                        <Route path='/forgotPass' component={ForgotPass} />
-                        <Route path='/card' component={Card} />
-                        <Route path='/Invitation' component={Invitation} />
-                        <Route path='/EditProfil' component={EditProfil} />
-                        <Route path='/friends' component={friends} />
+                        <AuthRoute path='/filActualite' component={filActualite} />
+                        <AuthRoute path='/iterfaceUser' component={iterfaceUser} />
+                        <AuthRoute path='/messagerie' component={messagerie} />
+                        <AuthRoute path='/profilUser/:username' component={profilUser} />
+                        <AuthRoute path='/forgotPass' component={ForgotPass} />
+                        <AuthRoute path='/card' component={Card} />
+                        <AuthRoute path='/Invitation' component={Invitation} />
+                        <AuthRoute path='/EditProfil' component={EditProfil} />
+                        <AuthRoute path='/friends' component={friends} />
                     </Switch>
                 </Router>
             }

@@ -1,36 +1,56 @@
-import React, { Component } from 'react';
+import React, { useState,Component } from 'react';
+import {useSelector,useDispatch} from "react-redux"
+import {useHistory} from "react-router"
+
 
 import profilepic from "../../img/me.jpg"
 
 import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { updateProfile } from '../../Redux/Actions/authUser';
+import { updateProfileImage } from '../../Redux/Actions/dataAction';
 
 
 
 
 const Editprofil = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setpassword] = React.useState("");
-  const [fullname, setfullname] = React.useState("");
+  const [bio, setBio] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [number, setnumber] = useState("");
+  const [adresse, setAdresse] = useState("");
+  const [etude, setetude] = useState("");
+  const [uploading, setUploading] = useState(false)
+  const [image, setImage] = useState('')
 
-  const [number, setnumber] = React.useState("");
-  const [ville, setville] = React.useState("");
-
-  const [etude, setetude] = React.useState("");
-
-  const handleSubmit = (event) => {
-    console.log(`
-      Email: ${email}
-      Password: ${password}
-      Fullname: ${fullname}
-      number:${number}
-      ville:${ville}
-      
-      `);
+  const infos=useSelector((state)=>state.infos)
+  const user=useSelector((state)=>state.user)
+  const dispatch=useDispatch()
+  const history=useHistory()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    let updateInfos={
+      displayName: displayName,
+      univer: etude,
+      tel:number,
+      adresse:adresse,
+      bio:bio,
+    }
 
     ;
 
-    event.preventDefault();
+    updateProfile(dispatch,history,user.credentials.username,updateInfos)
   }
+  const onUpload = (e) => {
+    const files = Array.from(e.target.files)
+    setUploading(true)
+
+    const formData = new FormData()
+
+    files.forEach((file, i) => {
+        formData.append(i, file)
+    })
+    updateProfileImage(history,user.credentials.username, formData)
+}
+ 
 
   return (
     <div className="py-10 bg-gray-100">
@@ -41,7 +61,7 @@ const Editprofil = () => {
               <img className="rounded-full ml-6 w-32 h-32 " src={profilepic} />
               <label className="cursor-pointer mt-6">
                 <span className="text-base px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-xl" >Importer image
-                <input type='file' className="hidden" />
+                <input onChange={onUpload} type='file' className="hidden" />
                 </span>
 
               </label>
@@ -52,7 +72,7 @@ const Editprofil = () => {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="bg-white space-y-6">
-            <div className="md:inline-flex space-y-4 md:space-y-0 w-full p-4 text-gray-500 items-center">
+            {/* <div className="md:inline-flex space-y-4 md:space-y-0 w-full p-4 text-gray-500 items-center">
               <h2 className="md:w-1/3 max-w-sm mx-auto ">Compte</h2>
               <div className="md:w-2/3 max-w-sm mx-auto">
                 <label className="text-sm text-gray-400">Email</label>
@@ -65,21 +85,21 @@ const Editprofil = () => {
                   <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-11/12 focus:outline-none focus:text-gray-600 p-2" placeholder="email@example.com" required />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <hr />
             <div className="md:inline-flex  space-y-4 md:space-y-0  w-full p-4 text-gray-500 items-center">
               <h2 className="md:w-1/3 mx-auto max-w-sm">Informations personnelles</h2>
               <div className="md:w-2/3 mx-auto max-w-sm space-y-5">
                 <div>
-                  <label className="text-sm text-gray-400">Nom et Prénom</label>
+                  <label className="text-sm text-gray-400">Pseudo</label>
                   <div className="w-full inline-flex border">
                     <div className="w-1/12 pt-2 bg-gray-100">
                       <svg fill="none" className="w-6 text-gray-400 mx-auto" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
-                    <input name="fullname" type="fullname" value={fullname} onChange={e => setfullname(e.target.value)} className="w-11/12 focus:outline-none focus:text-gray-600 p-2" placeholder="Nom complet" />
+                    <input name="displayName" type="fullname" value={displayName} onChange={e => setDisplayName(e.target.value)} className="w-11/12 focus:outline-none focus:text-gray-600 p-2" placeholder="Nom complet" />
                   </div>
                 </div>
                 <div>
@@ -114,7 +134,7 @@ const Editprofil = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       </svg>
                     </div>
-                    <input name="ville" value={ville} onChange={e => setville(e.target.value)} type="text" className="w-11/12 focus:outline-none focus:text-gray-600 p-2" placeholder="T-O" />
+                    <input name="adresse" value={adresse} onChange={e => setAdresse(e.target.value)} type="text" className="w-11/12 focus:outline-none focus:text-gray-600 p-2" placeholder="T-O" />
                   </div>
                 </div>
               </div>
@@ -123,28 +143,29 @@ const Editprofil = () => {
             <hr />
 
             <div className="md:inline-flex w-full space-y-4 md:space-y-0 p-8 text-gray-500 items-center">
-              <h2 className="md:w-4/12 max-w-sm mx-auto">Changer mot de passe</h2>
+               <h2 className="md:w-4/12 max-w-sm mx-auto">Changer ma Bio</h2>
 
               <div className="md:w-5/12 w-full md:pl-9 max-w-sm mx-auto space-y-5 md:inline-flex pl-2">
                 <div className="w-full inline-flex border-b">
-                  <div className="w-1/12 pt-2">
+                  {/* <div className="w-1/12 pt-2">
                     <svg fill="none" className="w-6 text-gray-400 mx-auto" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
-                  </div>
-                  <input name="password" value={password} onChange={e => setpassword(e.target.value)} type="password" className="w-11/12 focus:outline-none focus:text-gray-600 p-2 ml-4" placeholder="New" />
+                  </div> */}
+                  <textarea   onChange={e => setBio(e.target.value)} className="w-11/12 h-20 scrollbar-none focus:outline-none focus:text-gray-600 p-2 ml-4" placeholder="New" />
+                  
                 </div>
-              </div>
+              </div> 
 
               <div className="md:w-3/12 md:pl-6">
-                <Link to={'/profilUser'} >
+                
                   <div className="flex  items-center justify-center">
                     <button className="text-white w-36 md:w-32 rounded-md text-center bg-blue-500 hover:bg-blue-600 py-2 px-4  md:float-right">
                       
                     Modifier
                   </button>
                   </div>
-                </Link>
+                
               </div>
             </div>
 

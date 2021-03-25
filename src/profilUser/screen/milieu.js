@@ -4,6 +4,7 @@ import Search from '../buttons/search'
 import profilepic from '../../img/me.jpg'
 
 const milieu = (props) => {
+    console.log(props.post)
     return (
         <div className='w-full flex flex-col h-full'>
             <ul>

@@ -1,12 +1,13 @@
 const { admin, db } = require('../Util/admin')
-const { auth } = require('../../src/init')
+const { fire,auth } = require('../../src/init')
 
 exports.signUp = (req, res) => {
     console.log(req.body)
     let signUpinfo = {
-        firstname: req.body.username,
+        firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
+        displayName:req.body.username,
         username: req.body.username,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
@@ -31,9 +32,10 @@ exports.signUp = (req, res) => {
                             LastName: signUpinfo.lastname,
                             creatAt: new Date().toISOString(),
                             Email: signUpinfo.email,
-                            Password: signUpinfo.password,
+                            imageUrl:"https://firebasestorage.googleapis.com/v0/b/studup-dc5db.appspot.com/o/profile.png?alt=media&token=51a55cfd-bc1f-4a07-bc7d-cfc230334cd3",
                             isonline: false,
                             uid: userId,
+                            displayName:signUpinfo.displayName,
                             username: signUpinfo.username,
                         }
                         db.collection('Users').doc(signUpinfo.username).set(newUser)
@@ -49,6 +51,30 @@ exports.signUp = (req, res) => {
             console.log(e)
             res.status(500).json({ error: 'error while fetching' })
         })
+}
+exports.updateProfile=(req,res) => {
+   console.log(req.params.username)
+    const update={
+        displayName:req.body.displayName,
+        bio:req.body.bio,
+        adresse:req.body.adresse,
+        univer:req.body.univer,
+        tel:req.body.tel
+    }
+    db.doc(`/Users/${req.params.username}`).update(
+        {
+            displayName:req.body.displayName,
+            bio:req.body.bio,
+            adresse:req.body.adresse,
+            univer:req.body.univer,
+            tel:req.body.tel
+        }
+    ).then(() => { 
+        res.status(200).json({succes:"succés"})
+    }).catch((e) => {
+        console.log(e)
+        res.status(500).json({error:"error"})
+    })
 }
 
 // exports.signIn = (req, res) => {
@@ -333,7 +359,7 @@ exports.getFollowRequest = (req, res) => {
 }
 
 exports.getfollowers = (req, res) => {
-    let username = req.body.followed
+    let username = req.body.username
     db.collection('follows')
         .where('followed', '==', username)
         .get()

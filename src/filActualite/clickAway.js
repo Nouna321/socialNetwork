@@ -1,13 +1,14 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { CLEAN_POSTS, LOGOUT_USER } from '../Redux/types'
 import { Link, useHistory } from 'react-router-dom'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 const { fire } = require('../init')
 
-export default function ClickAway() {
+export default function ClickAway(props) {
     const dispatch = useDispatch()
     const history = useHistory()
+    const user=useSelector((state)=>state.user)
     const [open, setOpen] = React.useState(false)
 
     const handleClick = () => {
@@ -34,7 +35,7 @@ export default function ClickAway() {
                     <span className='sr-only'>Ouvrire le menu</span>
                     <img
                         className=' h-10 w-10  rounded-full '
-                        src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                        src={props.imageUrl}
                         alt=''
                     />
                 </button>
@@ -44,7 +45,7 @@ export default function ClickAway() {
                         className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5'
                         role='menu'
                         aria-orientation='vertical'>
-                        <Link to={'profilUser'} className='block px-4 py-2 text-base text-gray-500 hover:bg-gray-700' role='menuitem'>
+                        <Link to={{ pathname: `/profilUser/${user.credentials.username}`, state: { username:user.credentials.username} }} className='block px-4 py-2 text-base text-gray-500 hover:bg-gray-700' role='menuitem'>
                             Ton Profil
                         </Link>
 

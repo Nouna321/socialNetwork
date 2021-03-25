@@ -16,7 +16,7 @@ export default function Post4() {
         }
         sendRequest(dispatch, req)
     }
-    console.log(User.OnlineUsers)
+    console.log(infos)
 
     useEffect(() => {
         let user = { username: User.credentials.username }
@@ -30,7 +30,8 @@ export default function Post4() {
 
             <div className=' flex flex-col space-y-32 '>
                 <div className='grid grid-cols-3 h-full w-full  '>
-                    {infos.suggestedUsers != []
+                    {
+                    infos.suggestedUsers != [] && typeof(infos)!="undefined"
                         ? infos.suggestedUsers.map((user) => {
                               return (
                                   <div>

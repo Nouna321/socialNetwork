@@ -67,7 +67,6 @@ export const getFollowRequest = (dispatch, user) => {
 }
 
 export const getOnlineUsers = (dispatch, user) => {
-    console.log(user)
     axios
         .post('/users/getOnlineUsers', user)
         .then((res) => {
@@ -84,3 +83,5 @@ export const getFollowers = (dispatch, user) => {
         dispatch({ type: SET_FOLLOWERS, payload: res.data })
     })
 }
+
+

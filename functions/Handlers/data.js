@@ -45,12 +45,13 @@ exports.NotifLikeData = (req, res) => {
 }
 exports.getAuthenticatedUser = (req, res) => {
     let userData = {}
-    console.log(req.body)
+    console.log(req.body.uid)
 
     db.collection('Users')
         .where('uid', '==', req.body.uid)
         .get()
         .then((snapshot) => {
+            console.log(snapshot.size)
             if (snapshot.size > 0) {
                 snapshot.forEach((doc) => {
                     userData.credentials = doc.data()
@@ -73,14 +74,10 @@ exports.getUserDetails = (req, res) => {
         .doc(req.params.username)
         .get()
         .then((doc) => {
+            console.log(doc.data())
             if (doc.exists) {
                 userData.user = {
-                    uid: doc.data().uid,
-                    email: doc.data().Email,
-                    firstname: doc.data().FirstName,
-                    lastname: doc.data().LastName,
-                    username: doc.data().username,
-                    creatdAt: doc.data().creatAt,
+                   ...doc.data()
                 }
                 return db
                     .collection('userPosts')
@@ -371,7 +368,7 @@ exports.uploadImage = (req, res) => {
             })
             .then(() => {
                 // Append token to url
-                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/bddsocialnetwork.appspot.com/o/${imageFileName}?alt=media&token=${generatedToken}`
+                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/studup-dc5db.appspot.com/o/${imageFileName}?alt=media&token=${generatedToken}`
                 return res.status(200).send(imageUrl)
             })
             .catch((err) => {
@@ -381,6 +378,67 @@ exports.uploadImage = (req, res) => {
     })
     busboy.end(req.rawBody)
 }
+
+exports.uploadProfileImage = (req, res) => {
+    console.log(req.params.username)
+    const BusBoy = require('busboy')
+    const path = require('path')
+    const os = require('os')
+    const fs = require('fs')
+
+    const busboy = new BusBoy({ headers: req.headers })
+
+    let imageToBeUploaded = {}
+    let imageFileName
+    // String for image token
+    console.log(uuid())
+    let generatedToken = uuid()
+
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+        //console.log(fieldname, file, filename, encoding, mimetype);
+        if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+            return res.status(400).json({ error: 'Wrong file type submitted' })
+        }
+        // my.image.png => ['my', 'image', 'png']
+        const imageExtension = filename.split('.')[filename.split('.').length - 1]
+        // 32756238461724837.png
+        imageFileName = `${Math.round(Math.random() * 1000000000000).toString()}.${imageExtension}`
+        const filepath = path.join(os.tmpdir(), imageFileName)
+        imageToBeUploaded = { filepath, mimetype }
+        file.pipe(fs.createWriteStream(filepath))
+    })
+    busboy.on('finish', () => {
+        admin
+            .storage()
+            .bucket()
+            .upload(imageToBeUploaded.filepath, {
+                resumable: false,
+                metadata: {
+                    metadata: {
+                        contentType: imageToBeUploaded.mimetype,
+                        //Generate token to be appended to imageUrl
+                        firebaseStorageDownloadTokens: generatedToken,
+                    },
+                },
+            })
+            .then(() => {
+                // Append token to url
+                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/bddsocialnetwork.appspot.com/o/${imageFileName}?alt=media&token=${generatedToken}`
+               console.log(req.params
+                .username)
+                return db.collection("Users").doc(req.params.username).update({ imageUrl:imageUrl });
+                
+            }).then(() => {
+                res.status(200).json({succes:"image updated succesfully"})
+            })
+            .catch((err) => {
+                console.error(err)
+                return res.status(500).json({ error: 'something went wrong' })
+            })
+    })
+    busboy.end(req.rawBody)
+}
+
 
 exports.deleteImage = (req, res) => {
     let imageUrl = req.body.imageUrl
