@@ -1,14 +1,12 @@
 const firebase = require("firebase");
 const config = {
-  apiKey: "AIzaSyAfVUAUGe0KuOV6xQA9ymyALyA8eAnfX5s",
-  authDomain: "studup-dc5db.firebaseapp.com",
-  databaseURL:
-    "https://studup-dc5db-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "studup-dc5db",
-  storageBucket: "studup-dc5db.appspot.com",
-  messagingSenderId: "143387807472",
-  appId: "1:143387807472:web:3f94f45e6e6c3105863c35",
-  measurementId: "G-WLEWDZX87J",
+  apiKey: "AIzaSyBd00KOjkNayZ6GwVQh13rmVFrooKwmeMc",
+  authDomain: "socialapp-c6ffe.firebaseapp.com",
+  projectId: "socialapp-c6ffe",
+  storageBucket: "socialapp-c6ffe.appspot.com",
+  messagingSenderId: "897208819467",
+  appId: "1:897208819467:web:e1afc07267c8d8804acc0e",
+  measurementId: "G-DFTKTT4V4X"
 };
 const fire = firebase.default.initializeApp(config);
 const auth = firebase.default.auth();

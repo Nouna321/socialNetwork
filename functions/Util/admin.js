@@ -1,23 +1,19 @@
 const admin = require("firebase-admin");
 var serviceAccount = {
   type: "service_account",
-  project_id: "studup-dc5db",
-  private_key_id: "c33c3a934441cbb23e2a051299b7d8be8431fcd0",
-  private_key:
-    "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCmoHvIVAemJDs4\nf07nNIqkw8bRPxYh5N/aPiz0V+/GdDKPL4RQ4Q3u19fpuCwMu3ScI2hS3+OgVoeA\nQww5qvYg5vwXRDP589b9OXNqHGe4JtILdcF1T5sk2wNBBYL2D/VjJ9IkBV5RDeV+\n+99K8xKaAnYNwkId19fjy7bkIOLD2mcm+BAIBDnyTUgRPz7Eppv54YwDBYjfwGX5\nt+2UEVKXiLKUhpF7c3Gko/N/MfNW4nLeeALB8hgVngUC9qC52w32lOy8MKCwpyhN\nTEg3hl7/+WiQVDjw1Ntm+gpcR2J/uI/Z1vhkE67xa39poTIvN8xWT3mHqRwzWhBu\n++3K/iUHAgMBAAECggEADBZEJGoEDAdAzH5fqOHk1MLm3zLmVhsWKeyssiTW3dx7\n9msJ/Bv3OMYrgWa8u0e108W1wZ1AE9dzCNjUQDKonAZlbwKhipYnmELcnmvlEjSu\ns+oc2Hen12qTt9nAgDz0Hfc7hSVmjBan+SgoMHWlecqH6cOXrDaGEJ4sbCv+hxpo\nisDHt2kgfzv1SBHPVSEjUgZlc1hAcUrulQ5h3DYBZLa3VxoKqBzz6j2/vGhLdXJ5\n1+IXvE3QjKRSE10kmGqAY0SjsTn/5urTE/uK+SOX4MCRUm0XyCooNqeBOO2NaJAD\nhSHEURD/diD4CUEY9rMJBiKqMKCk9hhAU5H1nTKFoQKBgQDn6rr80EwuX8EH1Aub\nmM868Zk4NgaMZExBynFCD16Q5bC7P4JeO8vApbrwAc0hG1U0FDBdP7jte1UQ9Cv1\n85Oe6Xfv/nDc2Up6YUcSEnzgbo0IzOsdxTJ/LJcijl6Y00jeO50kgAcF016RC/wp\n3QCXHBKRHBWWnA1EtHHVV8BaWQKBgQC37hX0g2LAs81hhDlgq6eJW1VjG6HWmMgL\noUbxmSsT1IRIAh8jTQfdaTocrtNvYQjQYStXnwDLQ8GJj4imYfPQ9jnMf9bAdAZO\nIl/zOh2UTfrbBmB6oazk9jpq2bbntyEtTWHr3N7cNrC7aYnF4cc3UYSCk0WtgekL\nR9MowhHOXwKBgQDDEmDoB/kcRLSj9gsxfM5KgS9k5aSKcE7oQ/USIMVlUZ5fUiNB\nSkCvMXfVK160iz4WySiJNvFA6C18TjWv8orn7u9Qcg/S4/7Og4Z5QA3D5ZlBnsPh\nTZ6U9BfIHEKbf5TaQQCD1CCUGN+BV7hqKhe2Awnm/t11ypsqgDEDx4TnOQKBgFbO\n3LfZZrtSYSWcNURl352ZaLRs7zYMR6YNiSEvzEAAtioSLkYH7iVWq6Gr9YiEwJcw\ntTcWiVZl9SsKflEgu+UswNy+nUmZuPwZhzWRgTJkl3fWC6T1N1ecyrdxZ7z3FoZ+\nFjAuv1Qpz8G0Lt0hEVgPdj32ahVY0feL/6Il7id7AoGAeKrR4EDJjjtKNfIXm5vH\ntK0hYeMPEmfZZf2jBMhKVu0K3op9TVUuW4nAx11NEjQnP7ynHW7rU8OP0aotQ4HS\nA2XGsrl1XyL5bgILRzkPStZ4+5XK3l2Gi40detu83bduxPqqSi/TZkiPu7a/TKZJ\nh0Bs+zRImydLtY+UPtD7a/s=\n-----END PRIVATE KEY-----\n",
-  client_email: "firebase-adminsdk-mped1@studup-dc5db.iam.gserviceaccount.com",
-  client_id: "113697755442737729989",
+  project_id: "socialapp-c6ffe",
+  private_key_id: "d07705838f8a816dada0cfb2274b620f01819810",
+  private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCp7IUjp6iYro1C\nRaG0PznrwWrpP8ATIk926jCNG+JObP9bMvKUIQp3NlAYwNBRe5schvMVzkCyvKVT\n1akZIzZwNj06VC4uLnR98qH6UEPqapRUUoJPc48SX2oy/kD3yCVV1MU2C8sp7UL5\nawTHN9nNU4/GfPjtgmQ/ctIWvRVWpjgcfE6AsWmzrRZ6ZL8fUnGmQ9yftYp1uMCk\nYP1kMBp9M7nhrpC3AC6iyAA6d1SDlw9C/dYzQi4Af+l/Ha60mRt2osnYw9PkjLN0\nMHG/D2UixoZrHmtDNS4KKfP9ORlV+/s7j7OW8nvJuAAISDZn2al2GtlWw4+rUTv1\nLjoJ34TxAgMBAAECggEAJwnUQq9DkCRWBro5ntABzhSHK+Q+DAdPa1n9YoXb9bmb\n5wdq7LY0kdPUDgPKOFYl+iVU1pcmjQnDD+If8csBuED1yx9I5so8cC0cooXrPIFU\n55R3JKq/XXC3VNTN9z8vuKrjzfliqRS91NCN7fj6XG5Ms0TF6ccRofQOqTOyoc+4\nyg5SbAFBmUNVV4nibUDYaYREAgMOsBetMCoJdtBVRqufFGGphUrWG4QtS5Amkq8c\nreUcuO6paZpM6nh0cKKIovr0+dQuJidNOYauArSzuTK4qAfw7AywC8aSC0vT5mhr\nC2FoV4xC4RbsgPES11YYGVZi4HSbWB4gGvFvAMg5uQKBgQDqbX2YftHvgA9dGRDJ\nkMY4dP1rzOai2zmAGgRRUM/pfIqd/kZ2aX4rvRzC9S/8gQ8bKXotmUEWldNrraVO\nylgsEJY8jueVfA/VHiGRCZfV8bdi0gnYdf9aSPvrr24hyfoaC00nFKLnqAsx9ERj\niP7+aGOzhWWp5Rf7e4XJpbFajQKBgQC5j3y57erXgv53n+2Cr0x19CXP8J8HyXO+\nvJV7+CQYF/s+jn3O6fW9yuBeA3q9izqgvoLkOHQkcdhkVc/06oApzWo2K7QZ2Mp6\nor3Xt2bWpZiXOoBp00/1ZRmh4eEeOU9GwdH6raPpsyTxpmOjHsSkcwATq5QoBW5w\n1oi9EcpM9QKBgAUu4I0DmM6rzSsox7c9LTTIWWYNxLerEy1i5d+KYt5ts37kxVgO\n4wxChSVGWIZDsDrQgvQJJGhEbcU+tJ32WVa4EypJmpMyiAMVRHa5eJLxYjWcIT2Y\n9klfvborScsTdSUoRM9tZGCs1XqIRQ7SU5j6Y+HvPB0yhII56+5WbIJtAoGAazjD\nPHiCo6cYvSzXRBVhHCNImiAS9J/uVr+HrQuUZ6urzNjvT1mXWuTYwtpF2TKTXQDY\nh2Erk0eJX2jKcl3yUrVUcxrLxcekMDrLcdOTA+LKClCOlRe6czTJG+Z2e01oRp2G\nZNBjD44pgczAdCg6PkAJQlR5lqqUx3TfrEiUWeUCgYBmTNSLydwb/kDddUdgjYTq\nvfhh3zNxz/nLk+SKdOjLfAHd+M0nh3GTt1mXXGLgwjIwk3rd1NuwZzvEA2dG4qIR\nt41btsAFnrvj/ujpzSVTYscTF1LcfY+uYlU1HyzGwF6c7Cz4ZsTXo7J/iSSosrHd\nrZOetMntErrvd5+VKE9Dag==\n-----END PRIVATE KEY-----\n",
+  client_email: "firebase-adminsdk-lmfm7@socialapp-c6ffe.iam.gserviceaccount.com",
+  client_id: "115274704362599951321",
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
   token_uri: "https://oauth2.googleapis.com/token",
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  client_x509_cert_url:
-    "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mped1%40studup-dc5db.iam.gserviceaccount.com",
-};
+  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lmfm7%40socialapp-c6ffe.iam.gserviceaccount.com"
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://studup-dc5db-default-rtdb.europe-west1.firebasedatabase.app",
     storageBucket:"gs://studup-dc5db.appspot.com"
 });
 
