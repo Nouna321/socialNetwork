@@ -1,9 +1,10 @@
-module.exports = {
-    apiKey: 'AIzaSyBcqeSuB597caBtPUdC0uzYf0-Xpu0xErw',
-    authDomain: 'bddsocialnetwork.firebaseapp.com',
-    projectId: 'bddsocialnetwork',
-    storageBucket: 'bddsocialnetwork.appspot.com',
-    messagingSenderId: '1053211324822',
-    appId: '1:1053211324822:web:db11d9200a7b1765632db7',
-    measurementId: 'G-7L4XG2BW39',
-}
+module.exports ={
+  apiKey: "AIzaSyBd00KOjkNayZ6GwVQh13rmVFrooKwmeMc",
+  authDomain: "socialapp-c6ffe.firebaseapp.com",
+  projectId: "socialapp-c6ffe",
+  storageBucket: "socialapp-c6ffe.appspot.com",
+  messagingSenderId: "897208819467",
+  appId: "1:897208819467:web:e1afc07267c8d8804acc0e",
+  measurementId: "G-DFTKTT4V4X"
+};
+  

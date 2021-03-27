@@ -42,6 +42,22 @@ export const DECLINE_REQUEST = 'DELETE_IMAGE'
 export const SET_FOLLOWER = 'SET_FOLLOWER'
 export const UNFOLLOW_USER = 'UNFOLLOW_USER'
 
+<<<<<<< HEAD
 export const CREATE_PAGE = 'CREATE_PAGE'
 export const SET_PAGE = 'SET_PAGE'
 export const DELETE_PAGE = 'DELETE_PAGE'
+=======
+//Messages reducer types
+
+export const SET_MESSAGE = "SET_MESSAGE";
+export const LOAD_MESSAGES = "LOAD_MESSAGES";
+export const LOAD_CONVERSATIONS = "LOAD_CONVERSATIONS";
+export const LOAD_CONVERSATIONS_SUCESS = "LOAD_CONVERSATIONS_SUCESS";
+export const LOAD_SUCESS_MESSAGE = "LOAD_SUCESS";
+export const SET_SUCESS_MESSAGE = "SET_SUCESS";
+export const LOAD_FAILURE_MESSAGES = "LOAD_FAILURE";
+export const SET_FAILURE_MESSAGES = "SET_FAILURE";
+
+//MESSAGES TYPES
+export const MESSAGE_UPDATE = "MESSAGE_UPDATE";
+>>>>>>> b3fe22ce6bc12efc3c5790e4fbd096beb12e352c

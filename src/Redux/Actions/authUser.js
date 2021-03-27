@@ -183,3 +183,28 @@ export const forgotPassword = (userData, history, dispatch) => {
             })
         })
 }
+export const GetAuthUser=(dispatch,uid)=>{
+    axios
+         .post('/data/getAuthenticatedUser', uid)
+                .then((res) => {
+                    console.log('yes')
+                    const User = res.data
+                    console.log(User)
+                    dispatch({
+                        type: SET_USER,
+                        payload: User,
+                    })}).catch((e) => {
+                        console.log(e)
+                    })
+
+}
+export const updateProfile=(dispatch,history,username,profileDate) => {
+    axios.post(`/users/updateProfile/${username}`,profileDate).then((res) => {
+        history.push({
+            pathname: `/profilUser/${username}`,
+            state: { username: username }
+        })
+    }).catch((e) => {
+        console.log(e)
+    })
+}

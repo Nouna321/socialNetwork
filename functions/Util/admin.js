@@ -1,23 +1,22 @@
-const admin = require('firebase-admin')
+const admin = require("firebase-admin");
 var serviceAccount = {
-    type: 'service_account',
-    project_id: 'bddsocialnetwork',
-    private_key_id: 'a153355a0561c0a2cc32a51d55b5299f6703a45c',
-    private_key:
-        '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCiyGritg9GC+CP\nENF8rdI5ZnUFtRRywHP1nt8lIRBLh5iKZTeExsxPhQqlGDAEXheBdQ7gPR84HGNH\nm3vAspUWS6N97mjcoO5o8/FHQVzxO30rafBHcrDLJo09R7rP2de9lWKd3CJqu6wV\nGXhSMqS8okcuB+f+ZPvy1IqDihsxSesxmeTSxqjtSrx8I4TCY8y7F//sQ2xxGLYp\n5SYNuIMAfS2CHbiqhi1ck+JXyJVPTzqYRPTTDGv0Vicy+2F0HL45TsiCJi7CTjt2\nw7mzaVKHSW3bBAPwzfBcQ5j1YWEd9XFVjBek8ikkAEJ5srD6cZ+cyAaYHbcrABNH\nyVVIYEgZAgMBAAECggEAM4kpEcqa7k2/U/v6nrL3TfXqkZqBNU1JyRb5xasAmjD9\nMb+WwqIfuANCWf9c4F0bqwAw6/xd4GlYYyjOFrVTLwJWaf2rVEJdCHxGxIzkjHkN\niUuaZzxfzYlQiPinI7vvqhVb6edyPAFbmzh7l+ZxskjcKS4WnDtDat8wVTHJpyIj\nIXTaHdXClHcFNVvMPz0Ma6+bLXFuOtyfb1YesR7JM/7ec06ttpDWnUdmz6/DBSxj\nWtmT94kOTQyycEB8B20e/k14c4FcTSuTfdYMOPbOx++QBJ3DR6J01OhXCZwdXrp9\n25+9pbcwAqjjQ+DUECOCI5cX3LeIDGct1/EWHkzgYwKBgQDNhcEazaEHXd5Je8a7\n4y+yIkMrVOcXr3YLo7st89AL2eZ6h3wk3R2PPnB9jmiP8eqWPsmDWU+jdipuvLkK\nnVp6otwLCCYXCTuSnSWGvP7yAo0NYQVkIUrAPtuBm3ZEscaiZYp65klcvV9fzWW+\nymwt0fJE1E9eKPZoez3BXXEO0wKBgQDKw2grwueNYmstHn4KhF2h6FhHDwWSlfwK\naUX1RdUddekLk+hUq7ZYqhDo7ywhQytZWT4QEeRwt6FHiwHAUD7YH19N5V68S9NQ\nI6J0faYBNXCdTUcCAXkmtWlgBJdnCKujslz8Z1f67JLbmAJZig1y1wD44D87r9sp\nS5r06Pdx4wKBgF2fFm49SaNvcTkMN2WTgkClNu/gRz0U4rM+rJ+sNxOO+VzLpxOr\n3jFIgjnPy3X2/6PdijJZVtvhkkbLlYduUq8WzSIBXkiUHh0VlOih44ke/F4h2jDY\nsZKNj7SkuuVkDlYf50tA6B5k7bNYf4a/8zOUNcaA6H6+LjE+Is2Y4U2dAoGAaT9Y\n+S4oRylI/JiRUCA5Aeu6ttfDSr1zoGvYlmHzJ2Gm4A2cUSb4dbmBIYfUXkehXrWG\nE41WCHQo0RwEgrCkjkZqj+J5dD/fpf95OgJmgsYceGo+a3ocSs1rrx1zAVZs0YGp\n5pI2Btd5u2aCAbw5Et0rcgPkjrTPi/Xkry+mEYUCgYEAm1eRRftl5Aa+KjZSxrpD\nryx9CqP7HuUtHJwX52zLdcaW+km57oWj+uTIoXDbmEd0kYoTVoZoV/I8AIdN4vgE\n3shCeIfQC9crp7UVVi2tUaGwoq2WXPPgKz1Q7Mn6VuNnBprZnCb90JRDlhlNuYyl\n0BMjTbh4PJAFE0iiUaWKpVI=\n-----END PRIVATE KEY-----\n',
-    client_email: 'firebase-adminsdk-cz5tx@bddsocialnetwork.iam.gserviceaccount.com',
-    client_id: '107976554047894965351',
-    auth_uri: 'https://accounts.google.com/o/oauth2/auth',
-    token_uri: 'https://oauth2.googleapis.com/token',
-    auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
-    client_x509_cert_url: 'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-cz5tx%40bddsocialnetwork.iam.gserviceaccount.com',
+  type: "service_account",
+  project_id: "socialapp-c6ffe",
+  private_key_id: "d07705838f8a816dada0cfb2274b620f01819810",
+  private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCp7IUjp6iYro1C\nRaG0PznrwWrpP8ATIk926jCNG+JObP9bMvKUIQp3NlAYwNBRe5schvMVzkCyvKVT\n1akZIzZwNj06VC4uLnR98qH6UEPqapRUUoJPc48SX2oy/kD3yCVV1MU2C8sp7UL5\nawTHN9nNU4/GfPjtgmQ/ctIWvRVWpjgcfE6AsWmzrRZ6ZL8fUnGmQ9yftYp1uMCk\nYP1kMBp9M7nhrpC3AC6iyAA6d1SDlw9C/dYzQi4Af+l/Ha60mRt2osnYw9PkjLN0\nMHG/D2UixoZrHmtDNS4KKfP9ORlV+/s7j7OW8nvJuAAISDZn2al2GtlWw4+rUTv1\nLjoJ34TxAgMBAAECggEAJwnUQq9DkCRWBro5ntABzhSHK+Q+DAdPa1n9YoXb9bmb\n5wdq7LY0kdPUDgPKOFYl+iVU1pcmjQnDD+If8csBuED1yx9I5so8cC0cooXrPIFU\n55R3JKq/XXC3VNTN9z8vuKrjzfliqRS91NCN7fj6XG5Ms0TF6ccRofQOqTOyoc+4\nyg5SbAFBmUNVV4nibUDYaYREAgMOsBetMCoJdtBVRqufFGGphUrWG4QtS5Amkq8c\nreUcuO6paZpM6nh0cKKIovr0+dQuJidNOYauArSzuTK4qAfw7AywC8aSC0vT5mhr\nC2FoV4xC4RbsgPES11YYGVZi4HSbWB4gGvFvAMg5uQKBgQDqbX2YftHvgA9dGRDJ\nkMY4dP1rzOai2zmAGgRRUM/pfIqd/kZ2aX4rvRzC9S/8gQ8bKXotmUEWldNrraVO\nylgsEJY8jueVfA/VHiGRCZfV8bdi0gnYdf9aSPvrr24hyfoaC00nFKLnqAsx9ERj\niP7+aGOzhWWp5Rf7e4XJpbFajQKBgQC5j3y57erXgv53n+2Cr0x19CXP8J8HyXO+\nvJV7+CQYF/s+jn3O6fW9yuBeA3q9izqgvoLkOHQkcdhkVc/06oApzWo2K7QZ2Mp6\nor3Xt2bWpZiXOoBp00/1ZRmh4eEeOU9GwdH6raPpsyTxpmOjHsSkcwATq5QoBW5w\n1oi9EcpM9QKBgAUu4I0DmM6rzSsox7c9LTTIWWYNxLerEy1i5d+KYt5ts37kxVgO\n4wxChSVGWIZDsDrQgvQJJGhEbcU+tJ32WVa4EypJmpMyiAMVRHa5eJLxYjWcIT2Y\n9klfvborScsTdSUoRM9tZGCs1XqIRQ7SU5j6Y+HvPB0yhII56+5WbIJtAoGAazjD\nPHiCo6cYvSzXRBVhHCNImiAS9J/uVr+HrQuUZ6urzNjvT1mXWuTYwtpF2TKTXQDY\nh2Erk0eJX2jKcl3yUrVUcxrLxcekMDrLcdOTA+LKClCOlRe6czTJG+Z2e01oRp2G\nZNBjD44pgczAdCg6PkAJQlR5lqqUx3TfrEiUWeUCgYBmTNSLydwb/kDddUdgjYTq\nvfhh3zNxz/nLk+SKdOjLfAHd+M0nh3GTt1mXXGLgwjIwk3rd1NuwZzvEA2dG4qIR\nt41btsAFnrvj/ujpzSVTYscTF1LcfY+uYlU1HyzGwF6c7Cz4ZsTXo7J/iSSosrHd\nrZOetMntErrvd5+VKE9Dag==\n-----END PRIVATE KEY-----\n",
+  client_email: "firebase-adminsdk-lmfm7@socialapp-c6ffe.iam.gserviceaccount.com",
+  client_id: "115274704362599951321",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lmfm7%40socialapp-c6ffe.iam.gserviceaccount.com"
 }
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    storageBucket: 'gs://bddsocialnetwork.appspot.com',
-})
+  credential: admin.credential.cert(serviceAccount),
+    storageBucket:"gs://studup-dc5db.appspot.com"
+});
 
-const db = admin.firestore()
+const db = admin.firestore();
 
-module.exports = { admin, db }
+module.exports = { admin, db };

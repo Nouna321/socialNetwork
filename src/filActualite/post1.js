@@ -51,7 +51,7 @@ export default function Post1() {
                     <div className='flex flex-row space-x-8 justify-center items-center'>
                         <div>{User.loading == false ? <h3 className='text-gray-400'>{User.credentials.username}</h3> : null}</div>
                         <div>
-                            <ClickAway />
+                            <ClickAway imageUrl={User.credentials.imageUrl} />
                         </div>
                     </div>
                 </div>
