@@ -19,6 +19,9 @@ import Card from './filActualite/Card'
 import Invitation from './filActualite/invitation'
 import EditProfil from './profilUser/components/Editprofil'
 import friends from './profilUser/components/friend'
+import Page from './page/pageAdmin'
+import creePage from './page/pages'
+import formpage from './page/formpage'
 
 const config = require('./config')
 
@@ -42,6 +45,9 @@ const App = () => {
                         <Route path='/Invitation' component={Invitation} />
                         <Route path='/EditProfil' component={EditProfil} />
                         <Route path='/friends' component={friends} />
+                        <Route path='/page' component={Page} />
+                        <Route path='/creePage' component={creePage} />
+                        <Route path='/formpage' component={formpage} />
                     </Switch>
                 </Router>
             }

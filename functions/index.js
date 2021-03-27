@@ -42,6 +42,8 @@ const {
     likePostUser,
 } = require('./Handlers/data')
 
+const { postPages, getPages, deletePages } = require('./Handlers/page')
+
 var port = process.env.PORT || 5000
 
 // API endpoints
@@ -77,4 +79,8 @@ app.post('/data/suppUserPost', suppUserPost)
 app.post('/uploadImage', uploadImage)
 app.post('/deleteImage', deleteImage)
 
+app.post('/page/postPages', postPages)
+app.get('/page/getPages:pageId', getPages)
+app.post('/page/deletePages/:pagesId', deletePages)
+app.post('/page/postPagePost/:pagesId', postPagePost)
 exports.app = functions.https.onRequest(app)

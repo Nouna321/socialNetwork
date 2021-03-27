@@ -41,3 +41,7 @@ export const DECLINE_REQUEST = 'DELETE_IMAGE'
 
 export const SET_FOLLOWER = 'SET_FOLLOWER'
 export const UNFOLLOW_USER = 'UNFOLLOW_USER'
+
+export const CREATE_PAGE = 'CREATE_PAGE'
+export const SET_PAGE = 'SET_PAGE'
+export const DELETE_PAGE = 'DELETE_PAGE'
